@@ -32,11 +32,22 @@ The current implementation uses keyword-matching to select from pre-written resp
 **Feature Type**: New Capability (AI Integration) + Enhancement (Contact Form)
 **Estimated Complexity**: High
 **Primary Systems Affected**: AIChat component, data layer, new backend service
-**Dependencies**: Anthropic Python SDK, FastAPI, sse-starlette, @microsoft/fetch-event-source
+**Dependencies**: Anthropic Python SDK, FastAPI, sse-starlette, structlog, @microsoft/fetch-event-source
 
 ---
 
 ## CONTEXT REFERENCES
+
+### Pattern Reference Codebase (MUST READ)
+
+**`/Users/josephfajen/git/obsidian-ai-agent`** - Production FastAPI patterns to mirror:
+- `app/core/config.py` - Settings singleton with `@lru_cache` and `SettingsConfigDict`
+- `app/core/logging.py` - Structured logging with `structlog` and request ID correlation
+- `app/core/middleware.py` - Request logging middleware with timing and correlation IDs
+- `app/core/exceptions.py` - Custom exception hierarchy with polymorphic handlers
+- `app/main.py` - Lifespan management with `@asynccontextmanager`
+- `app/features/chat/streaming.py` - SSE streaming with proper event format
+- `pyproject.toml` - Project config with ruff, mypy, pytest-asyncio
 
 ### Relevant Codebase Files IMPORTANT: YOU MUST READ THESE FILES BEFORE IMPLEMENTING!
 
@@ -50,19 +61,24 @@ The current implementation uses keyword-matching to select from pre-written resp
 - `vite.config.ts` (lines 1-22) - Why: Need to add proxy configuration for development
 - `package.json` (lines 1-89) - Why: Frontend dependencies, scripts
 - `PRD.md` (full file) - Why: Contains complete requirements, API specs, architecture decisions
+- /Users/josephfajen/git/obsidian-ai-agent
 
 ### New Files to Create
 
-**Backend:**
+**Backend (following obsidian-ai-agent patterns):**
 - `backend/app/__init__.py` - Package init
-- `backend/app/main.py` - FastAPI entry point with static file serving
+- `backend/app/main.py` - FastAPI entry with lifespan management (`@asynccontextmanager`)
 - `backend/app/core/__init__.py` - Package init
-- `backend/app/core/config.py` - Settings singleton (pydantic-settings)
+- `backend/app/core/config.py` - Settings singleton with `@lru_cache` and `SettingsConfigDict`
+- `backend/app/core/logging.py` - Structured logging with `structlog` and request ID correlation
+- `backend/app/core/middleware.py` - Request logging middleware with timing
+- `backend/app/core/exceptions.py` - Custom exception hierarchy with handlers
 - `backend/app/core/agent.py` - Claude agent configuration with system prompt
 - `backend/app/api/__init__.py` - Package init
 - `backend/app/api/chat.py` - Chat endpoint with SSE streaming
 - `backend/app/api/contact.py` - Contact form endpoint
-- `backend/pyproject.toml` - Python dependencies and project config
+- `backend/app/api/health.py` - Health check endpoints (`/health`, `/health/ready`)
+- `backend/pyproject.toml` - Python dependencies with ruff, mypy, pytest-asyncio config
 - `backend/Dockerfile` - Container build for Railway
 
 **Frontend (moved/updated):**
@@ -131,45 +147,162 @@ import { josephProfile } from "@/data/joseph-fajen";
 - Text: `text-foreground`, `text-muted-foreground`, `font-serif` for headings
 - Animations: `animate-fade-in`, `animate-slide-up`
 
-**FastAPI Backend Pattern (standard):**
+**FastAPI Backend Patterns (from obsidian-ai-agent):**
+
 ```python
-# config.py - Settings singleton
-from pydantic_settings import BaseSettings
+# config.py - Settings singleton with @lru_cache (from obsidian-ai-agent/app/core/config.py)
+from functools import lru_cache
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    """Application settings loaded from environment variables."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",  # Don't fail on extra env vars
+    )
+
     anthropic_api_key: str
     environment: str = "development"
+    log_level: str = "INFO"
 
-    class Config:
-        env_file = ".env"
-
-settings = Settings()
+@lru_cache
+def get_settings() -> Settings:
+    """Get cached settings instance (singleton pattern)."""
+    return Settings()
 ```
 
 ```python
-# main.py - FastAPI entry
+# logging.py - Structured logging with request ID (from obsidian-ai-agent/app/core/logging.py)
+import uuid
+from contextvars import ContextVar
+import structlog
+
+request_id_var: ContextVar[str] = ContextVar("request_id", default="")
+
+def set_request_id(request_id: str | None = None) -> str:
+    """Set request ID in context, generating if not provided."""
+    if not request_id:
+        request_id = str(uuid.uuid4())
+    request_id_var.set(request_id)
+    return request_id
+
+def add_request_id(_logger, _method_name, event_dict):
+    """Processor to add request ID to all log entries."""
+    request_id = request_id_var.get()
+    if request_id:
+        event_dict["request_id"] = request_id
+    return event_dict
+
+def setup_logging(log_level: str = "INFO") -> None:
+    """Configure structured logging with JSON output."""
+    structlog.configure(
+        processors=[
+            add_request_id,
+            structlog.contextvars.merge_contextvars,
+            structlog.processors.add_log_level,
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.processors.format_exc_info,
+            structlog.processors.JSONRenderer(),
+        ],
+        wrapper_class=structlog.make_filtering_bound_logger(
+            getattr(logging, log_level.upper())
+        ),
+        logger_factory=structlog.PrintLoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
+
+def get_logger(name: str):
+    """Get a logger instance."""
+    return structlog.get_logger(name)
+```
+
+```python
+# middleware.py - Request logging middleware (from obsidian-ai-agent/app/core/middleware.py)
+import time
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class RequestLoggingMiddleware(BaseHTTPMiddleware):
+    """Middleware for request/response logging with correlation ID."""
+
+    async def dispatch(self, request, call_next):
+        request_id = request.headers.get("X-Request-ID")
+        set_request_id(request_id)
+
+        start_time = time.time()
+        logger.info("request.http_received", method=request.method, path=request.url.path)
+
+        try:
+            response = await call_next(request)
+            duration = time.time() - start_time
+            logger.info("request.http_completed", status_code=response.status_code,
+                       duration_seconds=round(duration, 3))
+            response.headers["X-Request-ID"] = request_id_var.get()
+            return response
+        except Exception as e:
+            logger.error("request.http_failed", error=str(e), exc_info=True)
+            raise
+```
+
+```python
+# main.py - FastAPI entry with lifespan (from obsidian-ai-agent/app/main.py)
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()
-app.include_router(chat_router, prefix="/api")
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    """Application lifespan - startup and shutdown logic."""
+    # Startup
+    setup_logging(log_level=get_settings().log_level)
+    logger = get_logger(__name__)
+    logger.info("application.lifecycle_started", version="1.0.0")
+
+    yield
+
+    # Shutdown
+    logger.info("application.lifecycle_stopped")
+
+app = FastAPI(title="AI Resume API", version="1.0.0", lifespan=lifespan)
+setup_middleware(app)
+setup_exception_handlers(app)
 ```
 
-**SSE Streaming Pattern:**
+**SSE Streaming Pattern (from obsidian-ai-agent):**
 ```python
-# Backend: chat.py
-from sse_starlette.sse import EventSourceResponse
+# Backend: chat.py - SSE streaming with proper headers
+from fastapi.responses import StreamingResponse
+import json
 
-async def generate_stream(message: str, history: list):
-    async with anthropic_client.messages.stream(...) as stream:
-        async for text in stream.text_stream:
-            yield {"event": "token", "data": json.dumps({"content": text})}
-    yield {"event": "done", "data": "{}"}
+async def generate_sse_stream(message: str, history: list) -> AsyncIterator[str]:
+    """Generate SSE-formatted stream. Format: 'data: {json}\n\n'"""
+    logger.info("agent.llm.streaming_started", prompt_length=len(message))
+
+    try:
+        async with anthropic_client.messages.stream(...) as stream:
+            async for text in stream.text_stream:
+                yield f"data: {json.dumps({'type': 'token', 'content': text})}\n\n"
+
+        yield f"data: {json.dumps({'type': 'done'})}\n\n"
+        logger.info("agent.llm.streaming_completed")
+
+    except Exception as e:
+        logger.error("agent.llm.streaming_failed", error=str(e), exc_info=True)
+        yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
-    return EventSourceResponse(generate_stream(request.message, request.history))
+    return StreamingResponse(
+        generate_sse_stream(request.message, request.history),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # Disable nginx buffering
+        },
+    )
 ```
 
 ```typescript
@@ -304,15 +437,37 @@ dependencies = [
     "uvicorn[standard]>=0.32.0",
     "anthropic>=0.40.0",
     "pydantic-settings>=2.6.0",
-    "sse-starlette>=2.1.0",
+    "structlog>=25.1.0",
     "python-multipart>=0.0.12",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "pytest>=8.0.0",
     "httpx>=0.27.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
 ]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+exclude = [".git", ".venv", "__pycache__"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP", "ANN", "S", "RUF"]
+ignore = ["ANN101", "ANN102", "S101"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+show_error_codes = true
+exclude = ["tests/"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["app", "tests"]
 ```
 
 #### 1.5 CREATE backend __init__.py files
@@ -330,35 +485,210 @@ touch backend/app/api/__init__.py
 
 #### 2.1 CREATE backend/app/core/config.py
 
-- **IMPLEMENT**: Settings singleton with pydantic-settings
-- **PATTERN**: Environment variable configuration
-- **IMPORTS**: `from pydantic_settings import BaseSettings`
-- **GOTCHA**: Use `model_config` instead of inner `Config` class (Pydantic v2)
-- **VALIDATE**: `python -c "from app.core.config import settings; print(settings)"`
+- **IMPLEMENT**: Settings singleton with pydantic-settings and @lru_cache
+- **PATTERN**: Mirror obsidian-ai-agent/app/core/config.py
+- **IMPORTS**: `from functools import lru_cache`, `from pydantic_settings import BaseSettings, SettingsConfigDict`
+- **GOTCHA**: Use `SettingsConfigDict` with `extra="ignore"` and `case_sensitive=False`
+- **VALIDATE**: `python -c "from app.core.config import get_settings; print(get_settings())"`
 
 ```python
-from pydantic_settings import BaseSettings
+from functools import lru_cache
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    anthropic_api_key: str
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",  # Don't fail on extra env vars
+    )
+
+    # Application
+    app_name: str = "AI Resume"
+    version: str = "1.0.0"
     environment: str = "development"
     log_level: str = "INFO"
+
+    # Anthropic
+    anthropic_api_key: str
 
     # Email service (for contact form - implement later)
     email_service_api_key: str = ""
     notification_email: str = ""
 
-    model_config = {
-        "env_file": ".env",
-        "env_file_encoding": "utf-8",
-    }
+    # CORS
+    allowed_origins: list[str] = [
+        "http://localhost:8080",
+        "http://localhost:5173",
+    ]
 
-settings = Settings()
+
+@lru_cache
+def get_settings() -> Settings:
+    """Get cached settings instance (singleton pattern)."""
+    return Settings()
 ```
 
-#### 2.2 CREATE backend/app/core/agent.py
+#### 2.2 CREATE backend/app/core/logging.py
+
+- **IMPLEMENT**: Structured logging with structlog and request ID correlation
+- **PATTERN**: Mirror obsidian-ai-agent/app/core/logging.py
+- **IMPORTS**: `import structlog`, `from contextvars import ContextVar`
+- **GOTCHA**: Use JSON output format for production; request ID in all logs
+- **VALIDATE**: `python -c "from app.core.logging import setup_logging, get_logger; setup_logging()"`
+
+```python
+import logging
+import uuid
+from contextvars import ContextVar
+
+import structlog
+from structlog.typing import EventDict, WrappedLogger
+
+# Context variable for request correlation ID
+request_id_var: ContextVar[str] = ContextVar("request_id", default="")
+
+
+def get_request_id() -> str:
+    """Get the current request ID from context."""
+    return request_id_var.get()
+
+
+def set_request_id(request_id: str | None = None) -> str:
+    """Set request ID in context, generating one if not provided."""
+    if not request_id:
+        request_id = str(uuid.uuid4())
+    request_id_var.set(request_id)
+    return request_id
+
+
+def add_request_id(
+    _logger: WrappedLogger, _method_name: str, event_dict: EventDict
+) -> EventDict:
+    """Processor to add request ID to all log entries."""
+    request_id = get_request_id()
+    if request_id:
+        event_dict["request_id"] = request_id
+    return event_dict
+
+
+def setup_logging(log_level: str = "INFO") -> None:
+    """Configure structured logging for the application."""
+    level_int = getattr(logging, log_level.upper())
+
+    structlog.configure(
+        processors=[
+            add_request_id,
+            structlog.contextvars.merge_contextvars,
+            structlog.processors.add_log_level,
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            structlog.processors.JSONRenderer(),
+        ],
+        wrapper_class=structlog.make_filtering_bound_logger(level_int),
+        context_class=dict,
+        logger_factory=structlog.PrintLoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
+
+
+def get_logger(name: str) -> WrappedLogger:
+    """Get a logger instance for a module."""
+    return structlog.get_logger(name)
+```
+
+#### 2.3 CREATE backend/app/core/middleware.py
+
+- **IMPLEMENT**: Request logging middleware with timing and correlation IDs
+- **PATTERN**: Mirror obsidian-ai-agent/app/core/middleware.py
+- **IMPORTS**: `from starlette.middleware.base import BaseHTTPMiddleware`
+- **GOTCHA**: Add X-Request-ID to response headers
+- **VALIDATE**: Import succeeds
+
+```python
+import time
+from collections.abc import Awaitable, Callable
+
+from fastapi import FastAPI, Request, Response
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.cors import CORSMiddleware
+
+from app.core.config import get_settings
+from app.core.logging import get_logger, get_request_id, set_request_id
+
+logger = get_logger(__name__)
+
+
+class RequestLoggingMiddleware(BaseHTTPMiddleware):
+    """Middleware for request/response logging with correlation ID."""
+
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        """Process each request and response."""
+        # Extract or generate request ID
+        request_id = request.headers.get("X-Request-ID")
+        set_request_id(request_id)
+
+        start_time = time.time()
+        logger.info(
+            "request.http_received",
+            method=request.method,
+            path=request.url.path,
+            client_host=request.client.host if request.client else None,
+        )
+
+        try:
+            response = await call_next(request)
+            duration = time.time() - start_time
+
+            logger.info(
+                "request.http_completed",
+                method=request.method,
+                path=request.url.path,
+                status_code=response.status_code,
+                duration_seconds=round(duration, 3),
+            )
+
+            # Add request ID to response headers
+            response.headers["X-Request-ID"] = get_request_id()
+            return response
+
+        except Exception as e:
+            duration = time.time() - start_time
+            logger.error(
+                "request.http_failed",
+                method=request.method,
+                path=request.url.path,
+                error=str(e),
+                duration_seconds=round(duration, 3),
+                exc_info=True,
+            )
+            raise
+
+
+def setup_middleware(app: FastAPI) -> None:
+    """Set up all middleware for the application."""
+    settings = get_settings()
+
+    # Add request logging middleware
+    app.add_middleware(RequestLoggingMiddleware)
+
+    # Add CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.allowed_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+```
+
+#### 2.4 CREATE backend/app/core/agent.py
 
 - **IMPLEMENT**: Claude agent configuration with system prompt
 - **PATTERN**: Reference PRD.md systemPrompt requirements
@@ -543,61 +873,130 @@ async def submit_contact(request: ContactRequest):
     )
 ```
 
-#### 2.5 CREATE backend/app/main.py
+#### 2.6b CREATE backend/app/api/health.py
 
-- **IMPLEMENT**: FastAPI entry point with routers and static file serving
-- **PATTERN**: Include routers, add CORS, mount static files
-- **IMPORTS**: All routers, FastAPI, CORSMiddleware, StaticFiles
-- **GOTCHA**: Static files only mounted in production (when directory exists)
+- **IMPLEMENT**: Health check endpoints
+- **PATTERN**: Mirror obsidian-ai-agent/app/core/health.py
+- **IMPORTS**: `from fastapi import APIRouter`
+- **GOTCHA**: Include `/health` and `/health/ready` endpoints
+- **VALIDATE**: `curl http://localhost:8000/health`
+
+```python
+from fastapi import APIRouter
+
+from app.core.config import get_settings
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
+router = APIRouter()
+
+
+@router.get("/health")
+async def health_check() -> dict[str, str]:
+    """Basic health check endpoint."""
+    settings = get_settings()
+    return {
+        "status": "healthy",
+        "service": "ai-resume-api",
+        "version": settings.version,
+    }
+
+
+@router.get("/health/ready")
+async def readiness_check() -> dict[str, str]:
+    """Readiness check for all application dependencies."""
+    settings = get_settings()
+    return {
+        "status": "ready",
+        "environment": settings.environment,
+    }
+```
+
+#### 2.7 CREATE backend/app/main.py
+
+- **IMPLEMENT**: FastAPI entry point with lifespan management
+- **PATTERN**: Mirror obsidian-ai-agent/app/main.py with `@asynccontextmanager` lifespan
+- **IMPORTS**: All routers, FastAPI, lifespan context manager
+- **GOTCHA**: Setup logging and middleware in lifespan startup
 - **VALIDATE**: `cd backend && uvicorn app.main:app --reload`
 
 ```python
-import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .api import chat, contact
-from .core.config import settings
+from app.api import chat, contact
+from app.api.health import router as health_router
+from app.core.config import get_settings
+from app.core.logging import get_logger, setup_logging
+from app.core.middleware import setup_middleware
 
-# Configure logging
-logging.basicConfig(
-    level=getattr(logging, settings.log_level),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
+settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    """Application lifespan event handler.
+
+    Handles startup and shutdown logic:
+    - Startup: Configure logging
+    - Shutdown: Cleanup resources
+    """
+    # Startup
+    setup_logging(log_level=settings.log_level)
+    logger = get_logger(__name__)
+    logger.info(
+        "application.lifecycle_started",
+        app_name=settings.app_name,
+        version=settings.version,
+        environment=settings.environment,
+    )
+
+    yield
+
+    # Shutdown
+    logger.info("application.lifecycle_stopped", app_name=settings.app_name)
+
+
+# Create FastAPI application
 app = FastAPI(
-    title="AI Resume API",
+    title=settings.app_name,
     description="Backend for Joseph Fajen's AI-powered interactive resume",
-    version="1.0.0",
+    version=settings.version,
+    lifespan=lifespan,
 )
 
-# CORS middleware for development
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:8080", "http://localhost:5173"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Setup middleware (includes CORS and request logging)
+setup_middleware(app)
 
-# Include API routers
+# Include routers
+app.include_router(health_router, tags=["health"])
 app.include_router(chat.router, prefix="/api", tags=["chat"])
 app.include_router(contact.router, prefix="/api", tags=["contact"])
 
 
-@app.get("/health")
-async def health():
-    """Health check endpoint."""
-    return {"status": "healthy", "version": "1.0.0"}
+@app.get("/")
+def read_root() -> dict[str, str]:
+    """Root endpoint providing API information."""
+    return {
+        "message": settings.app_name,
+        "version": settings.version,
+        "docs": "/docs",
+    }
 
 
 # Mount static files in production (when built frontend exists)
 static_dir = Path(__file__).parent.parent.parent / "static"
 if static_dir.exists():
     app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
 ```
 
 #### 2.6 CREATE backend/.env.example
@@ -1307,9 +1706,11 @@ cd frontend
 npm run lint
 npx tsc --noEmit
 
-# Backend
+# Backend (using ruff and mypy from obsidian-ai-agent patterns)
 cd backend
-python -m py_compile app/main.py app/core/config.py app/api/chat.py app/api/contact.py
+ruff check app/
+ruff format --check app/
+mypy app/
 ```
 
 ### Level 2: Unit Tests
@@ -1402,6 +1803,17 @@ curl -N -X POST http://localhost:8000/api/chat \
 
 ## NOTES
 
+### Pattern Reference: obsidian-ai-agent
+
+This plan mirrors production patterns from `/Users/josephfajen/git/obsidian-ai-agent`:
+
+1. **Settings Singleton** (`@lru_cache` + `SettingsConfigDict`): Cached settings with flexible env var handling
+2. **Structured Logging** (`structlog` + request ID correlation): JSON logs with request tracking
+3. **Request Middleware** (`RequestLoggingMiddleware`): Timing, correlation IDs, X-Request-ID headers
+4. **Lifespan Management** (`@asynccontextmanager`): Clean startup/shutdown with proper logging
+5. **Health Endpoints** (`/health`, `/health/ready`): Standard health check patterns
+6. **Tool Configuration** (ruff, mypy, pytest-asyncio): Modern Python tooling
+
 ### Design Decisions
 
 1. **Single service deployment**: FastAPI serves static frontend in production rather than separate frontend/backend services. Simpler to deploy and manage.
@@ -1413,6 +1825,8 @@ curl -N -X POST http://localhost:8000/api/chat \
 4. **Profile context in request**: Frontend sends full profile context with each request. Keeps backend stateless and allows future multi-profile support.
 
 5. **Fallback to demo responses**: If backend fails, frontend falls back to keyword-matching demo responses for graceful degradation.
+
+6. **Structured logging**: JSON logs with request ID correlation enable distributed tracing and easy log aggregation.
 
 ### Trade-offs
 
