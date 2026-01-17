@@ -1,18 +1,18 @@
-// Marcus Chen's profile data - the core content for the AI and display
+// Joseph Fajen's profile data - the core content for the AI and display
 
-export const marcusProfile = {
-  name: "Marcus Chen",
+export const josephProfile = {
+  name: "Joseph Fajen",
   title: "Staff Engineer",
   subtitle: "Platform infrastructure, developer tools, and technical strategy",
   location: "San Francisco Bay Area",
   status: "Open to Staff+ roles at Series B-D companies",
-  
+
   companies: ["Stripe", "Datadog", "Series B → IPO"],
-  
-  summary: `I'm strongest at platform/infrastructure work, weakest at consumer product. 
-I prefer "fix the mess" situations over greenfield builds. 
+
+  summary: `I'm strongest at platform/infrastructure work, weakest at consumer product.
+I prefer "fix the mess" situations over greenfield builds.
 I'm not interested in management tracks right now.`,
-  
+
   experience: [
     {
       company: "Datadog",
@@ -63,7 +63,7 @@ I'm not interested in management tracks right now.`,
       }
     }
   ],
-  
+
   skills: {
     strong: [
       "Platform/Infrastructure Architecture",
@@ -84,7 +84,7 @@ I'm not interested in management tracks right now.`,
       "Growth/Experimentation"
     ]
   },
-  
+
   failures: [
     {
       year: 2022,
@@ -108,8 +108,8 @@ I'm not interested in management tracks right now.`,
       lessons: "Optimize for learning, not for load. The scale problems you imagine rarely match the ones you actually face."
     }
   ],
-  
-  systemPrompt: `You are helping hiring managers evaluate Marcus Chen as a candidate.
+
+  systemPrompt: `You are helping hiring managers evaluate Joseph Fajen as a candidate.
 
 CORE INSTRUCTIONS:
 - Be specific. Use actual details from his experience, not generic language.
@@ -117,7 +117,7 @@ CORE INSTRUCTIONS:
 - When assessing fit for a role, give a genuine assessment including where he might NOT be the right choice.
 - Don't oversell. Confidence comes from substance, not superlatives.
 
-WHAT MARCUS WANTS YOU TO KNOW:
+WHAT JOSEPH WANTS YOU TO KNOW:
 - He's looking for Staff+ roles at Series B-D companies
 - He's strongest at platform/infrastructure work, weakest at consumer product
 - He prefers "fix the mess" situations over greenfield builds
@@ -135,9 +135,9 @@ WHAT HE EXPLICITLY DOESN'T WANT:
 };
 
 export const demoResponses = {
-  default: `Based on Marcus's experience, yes — this is actually a strong fit, and here's why:
+  default: `Based on Joseph's experience, yes — this is actually a strong fit, and here's why:
 
-At his previous role, Marcus inherited what he describes as "technical debt dressed up as architecture" — a Kubernetes setup that was theoretically modern but practically unmaintainable. The original team had over-engineered for scale they never hit, and the documentation was scattered across 40+ Notion pages that contradicted each other.
+At his previous role, Joseph inherited what he describes as "technical debt dressed up as architecture" — a Kubernetes setup that was theoretically modern but practically unmaintainable. The original team had over-engineered for scale they never hit, and the documentation was scattered across 40+ Notion pages that contradicted each other.
 
 His approach wasn't to rip and replace. He spent the first 6 weeks just mapping what existed, talking to the 3 remaining engineers who'd touched it, and building what he calls a "reality document" — what the system actually did vs. what people thought it did.
 
@@ -150,9 +150,9 @@ For a Series B with messy infrastructure specifically, I'd highlight:
 
 Gap to probe: His previous cleanup was at a company with 50 engineers. If you're smaller (under 15), ask about his experience operating with fewer resources.`,
 
-  costReduction: `The cost reduction wasn't primarily technical—it was political. Marcus had to convince three VPs that their pet projects were burning money. He built a 'cost transparency dashboard' first (took 2 weeks), which shifted the conversation from 'engineering wants to cut our budget' to 'here's what we're actually spending.' That political shift meant VPs started advocating for the optimization instead of resisting it. The technical work—spot instances for non-critical workloads, right-sizing based on actual utilization, reserved instances for predictable baseline—was straightforward after that. Total timeline: 4 months, but 3.5 of those were organizational alignment.`,
+  costReduction: `The cost reduction wasn't primarily technical—it was political. Joseph had to convince three VPs that their pet projects were burning money. He built a 'cost transparency dashboard' first (took 2 weeks), which shifted the conversation from 'engineering wants to cut our budget' to 'here's what we're actually spending.' That political shift meant VPs started advocating for the optimization instead of resisting it. The technical work—spot instances for non-critical workloads, right-sizing based on actual utilization, reserved instances for predictable baseline—was straightforward after that. Total timeline: 4 months, but 3.5 of those were organizational alignment.`,
 
-  failure: `Marcus's biggest documented failure was the 2022 Kubernetes migration at Datadog. He led a 6-month migration project that got cancelled 80% of the way through.
+  failure: `Joseph's biggest documented failure was the 2022 Kubernetes migration at Datadog. He led a 6-month migration project that got cancelled 80% of the way through.
 
 What happened: The engineering org was technically ready, but the ops teams weren't trained and leadership got cold feet when they hit the first serious incident during the transition.
 
@@ -160,7 +160,7 @@ His own assessment: "I underestimated the political resistance. I should have in
 
 He doesn't try to spin this as a success. It was a failure, and he owns it.`,
 
-  leadership: `Marcus has led teams in different contexts:
+  leadership: `Joseph has led teams in different contexts:
 
 At Stripe (2018-2021): Hired and mentored 6 engineers on the platform team. He describes his style as "player-coach"—still writing code while helping others grow.
 

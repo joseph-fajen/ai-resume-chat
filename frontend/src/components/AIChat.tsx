@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { X, Send, Sparkles } from "lucide-react";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { cn } from "@/lib/utils";
-import { demoResponses } from "@/data/marcus-profile";
+import { demoResponses, josephProfile } from "@/data/joseph-fajen";
 
 interface Message {
   role: "user" | "assistant";
@@ -20,16 +21,54 @@ const suggestedQuestions = [
   "What kind of leadership experience do they have?",
 ];
 
+// Build profile context string for API
+const buildProfileContext = () => {
+  return `
+Name: ${josephProfile.name}
+Title: ${josephProfile.title}
+Status: ${josephProfile.status}
+Summary: ${josephProfile.summary}
+
+Experience:
+${josephProfile.experience
+  .map(
+    (exp) => `
+- ${exp.company} (${exp.period}): ${exp.role}
+  ${exp.highlights.join("; ")}
+  Context: ${exp.aiContext.situation} ${exp.aiContext.approach}
+`
+  )
+  .join("")}
+
+Skills - Strong: ${josephProfile.skills.strong.join(", ")}
+Skills - Moderate: ${josephProfile.skills.moderate.join(", ")}
+Skills - Gaps: ${josephProfile.skills.gaps.join(", ")}
+
+Documented Failures:
+${josephProfile.failures.map((f) => `- ${f.year}: ${f.title} - ${f.summary}`).join("\n")}
+`;
+};
+
 const AIChat = ({ isOpen, onClose }: AIChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [displayedResponse, setDisplayedResponse] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, displayedResponse]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   const getResponse = (question: string): string => {
     const q = question.toLowerCase();
@@ -65,14 +104,74 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
     }, 8);
   };
 
-  const handleSubmit = (question: string) => {
+  const handleSubmit = async (question: string) => {
     if (!question.trim() || isTyping) return;
+
     setMessages((prev) => [...prev, { role: "user", content: question }]);
     setInput("");
-    setTimeout(() => {
-      const response = getResponse(question);
-      typeResponse(response);
-    }, 500);
+    setIsTyping(true);
+    setDisplayedResponse("");
+
+    let fullResponse = "";
+
+    // Create abort controller for this request
+    abortControllerRef.current = new AbortController();
+
+    try {
+      await fetchEventSource("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: question,
+          conversation_history: messages,
+          profile_context: buildProfileContext(),
+        }),
+        signal: abortControllerRef.current.signal,
+        onmessage(event) {
+          if (event.event === "token") {
+            const data = JSON.parse(event.data);
+            fullResponse += data.content;
+            setDisplayedResponse(fullResponse);
+          } else if (event.event === "done") {
+            setIsTyping(false);
+            setMessages((prev) => [...prev, { role: "assistant", content: fullResponse }]);
+            setDisplayedResponse("");
+          } else if (event.event === "error") {
+            console.error("Stream error:", event.data);
+            setIsTyping(false);
+            // Fallback to demo response
+            const fallbackResponse = getResponse(question);
+            typeResponse(fallbackResponse);
+          }
+        },
+        onerror(err) {
+          console.error("SSE error:", err);
+          setIsTyping(false);
+          // Fallback to demo response
+          const fallbackResponse = getResponse(question);
+          typeResponse(fallbackResponse);
+          throw err; // Stop retrying
+        },
+        onclose() {
+          // If we get here without a full response, it means connection was closed unexpectedly
+          if (fullResponse && !messages.some(m => m.content === fullResponse)) {
+            setIsTyping(false);
+            setMessages((prev) => [...prev, { role: "assistant", content: fullResponse }]);
+            setDisplayedResponse("");
+          }
+        },
+      });
+    } catch (error) {
+      // AbortError is expected when we abort, don't show fallback
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
+      console.error("Chat error:", error);
+      setIsTyping(false);
+      // Fallback to demo response
+      const fallbackResponse = getResponse(question);
+      typeResponse(fallbackResponse);
+    }
   };
 
   if (!isOpen) return null;
@@ -84,10 +183,10 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center text-accent-foreground font-serif font-bold">
-              M
+              J
             </div>
             <div>
-              <p className="text-foreground font-medium">Ask AI About Marcus</p>
+              <p className="text-foreground font-medium">Ask AI About Joseph</p>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
                 Ready to answer your questions
@@ -111,7 +210,7 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
                 What would you like to know?
               </h3>
               <p className="text-muted-foreground text-sm mb-6 max-w-md">
-                Ask specific questions about Marcus's experience, skills, or fit for your role. Get honest, detailed answers.
+                Ask specific questions about Joseph's experience, skills, or fit for your role. Get honest, detailed answers.
               </p>
               <div className="w-full max-w-md space-y-2">
                 {suggestedQuestions.map((q, i) => (

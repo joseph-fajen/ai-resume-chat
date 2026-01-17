@@ -6,13 +6,13 @@ const Footer = () => {
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <p className="text-2xl font-serif text-foreground mb-2">Marcus Chen</p>
+            <p className="text-2xl font-serif text-foreground mb-2">Joseph Fajen</p>
             <p className="text-muted-foreground">Staff Engineer · Platform Infrastructure</p>
           </div>
 
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com"
+              href="https://github.com/josephfajen"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 bg-secondary rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -20,7 +20,7 @@ const Footer = () => {
               <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/josephfajen"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 bg-secondary rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -28,7 +28,7 @@ const Footer = () => {
               <Linkedin className="w-5 h-5" />
             </a>
             <a
-              href="mailto:marcus@example.com"
+              href="mailto:joseph@example.com"
               className="p-3 bg-secondary rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Mail className="w-5 h-5" />

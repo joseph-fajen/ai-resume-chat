@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Github, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
@@ -46,7 +46,7 @@ const Header = ({ onOpenChat }: HeaderProps) => {
           onClick={() => scrollToSection("hero")}
           className="font-serif text-xl text-foreground hover:text-primary transition-colors"
         >
-          MC
+          JF
         </button>
 
         {/* Desktop nav */}
@@ -69,6 +69,22 @@ const Header = ({ onOpenChat }: HeaderProps) => {
           >
             Ask AI
           </button>
+          <a
+            href="https://linkedin.com/in/josephfajen"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Linkedin className="w-5 h-5" />
+          </a>
+          <a
+            href="https://github.com/josephfajen"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Github className="w-5 h-5" />
+          </a>
         </div>
 
         {/* Mobile menu button */}
