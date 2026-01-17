@@ -1,5 +1,6 @@
 import { MessageSquare } from "lucide-react";
 import { josephProfile } from "@/data/joseph-fajen";
+import { companyToId } from "./Experience";
 
 interface HeroProps {
   onOpenChat: () => void;
@@ -35,14 +36,24 @@ const Hero = ({ onOpenChat }: HeroProps) => {
 
         {/* Company badges */}
         <div className="flex flex-wrap gap-3 mb-12 animate-slide-up stagger-3">
-          {josephProfile.companies.map((company) => (
-            <span
-              key={company}
-              className="px-4 py-2 bg-card border border-border rounded-full text-sm text-foreground"
-            >
-              {company}
-            </span>
-          ))}
+          {josephProfile.companies.map((company) => {
+            // Find matching experience entry (partial match for flexibility)
+            const matchingExp = josephProfile.experience.find(
+              (exp) => exp.company.toLowerCase().includes(company.toLowerCase()) ||
+                       company.toLowerCase().includes(exp.company.toLowerCase().split(" ")[0])
+            );
+            const targetId = matchingExp ? companyToId(matchingExp.company) : "experience";
+
+            return (
+              <button
+                key={company}
+                onClick={() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" })}
+                className="px-4 py-2 bg-card border border-border rounded-full text-sm text-foreground hover:border-accent hover:text-accent transition-colors cursor-pointer"
+              >
+                {company}
+              </button>
+            );
+          })}
         </div>
 
         {/* CTA Button */}

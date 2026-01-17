@@ -16,6 +16,7 @@ interface ExperienceCardProps {
   highlights: string[];
   aiContext: AIContext;
   index: number;
+  id?: string;
 }
 
 const ExperienceCard = ({
@@ -25,11 +26,13 @@ const ExperienceCard = ({
   highlights,
   aiContext,
   index,
+  id,
 }: ExperienceCardProps) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div
+      id={id}
       className={cn(
         "group relative p-6 md:p-8 bg-card border border-border rounded-2xl transition-all duration-300 hover:border-accent/50",
         "animate-slide-up opacity-0"

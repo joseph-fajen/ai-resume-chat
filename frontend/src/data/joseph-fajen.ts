@@ -2,114 +2,108 @@
 
 export const josephProfile = {
   name: "Joseph Fajen",
-  title: "Staff Engineer",
-  subtitle: "Platform infrastructure, developer tools, and technical strategy",
-  location: "San Francisco Bay Area",
-  status: "Open to Staff+ roles at Series B-D companies",
+  title: "Senior Technical Writer",
+  subtitle: "API documentation, blockchain technologies, and docs-as-code workflows",
+  location: "Portland, OR",
+  status: "Open to Senior Technical Writer roles",
 
-  companies: ["Stripe", "Datadog", "Series B → IPO"],
+  companies: ["IOHK", "AJA Video Systems", "Ensemble Designs"],
 
-  summary: `I'm strongest at platform/infrastructure work, weakest at consumer product.
-I prefer "fix the mess" situations over greenfield builds.
-I'm not interested in management tracks right now.`,
+  summary: `20+ years transforming complex technical concepts into user-friendly documentation.
+Expert at building relationships with developers and product teams.
+I prefer documentation challenges that require deep technical understanding and cross-functional collaboration.`,
 
   experience: [
     {
-      company: "Datadog",
-      role: "Staff Engineer, Platform Infrastructure",
-      period: "2021–Present",
+      company: "IOHK",
+      role: "Senior Technical Writer",
+      period: "2022–Present",
       highlights: [
-        "Designed observability platform serving 15K+ customers, handling 10TB/day",
-        "Led 12-person team through SOC2 compliance certification",
-        "Reduced infrastructure costs by $1.2M/year through optimization"
+        "Built Essential Cardano AI Assistant Chatbot end-to-end — 2,500 documents, zero hallucination",
+        "Created unified documentation site for Marlowe smart contract project using Docusaurus",
+        "Led comprehensive reorganization of Plutus documentation, migrating from Read the Docs to Docusaurus"
       ],
       aiContext: {
-        situation: "Inherited $4M/year AWS spend. Leadership wanted 30% reduction but wouldn't approve headcount for dedicated FinOps role.",
-        approach: "Built cost transparency dashboard first (2 weeks). Made spend visible to VPs, shifted political dynamics. Technical work came second.",
-        technicalWork: "Spot instances for non-critical workloads, right-sizing from utilization data, reserved instances for predictable baseline.",
-        lessonsLearned: "Cost optimization is a people problem disguised as a technical problem. 3.5 of the 4 months were organizational alignment."
+        situation: "Cardano blockchain documentation was fragmented across multiple repositories with inconsistent formats and outdated content.",
+        approach: "Consolidated documentation into unified sites, implemented docs-as-code workflows, and coordinated across development, web, communications, and design teams.",
+        technicalWork: "Built production AI chatbot with Next.js, created extraction pipeline for 2,500 documents from 8 sources, deployed on Railway infrastructure. Designed Docusaurus-based documentation sites with improved information architecture.",
+        lessonsLearned: "Documentation unification is as much about stakeholder alignment as it is about content. Getting buy-in from multiple teams early prevents rework later."
       }
     },
     {
-      company: "Stripe",
-      role: "Senior Engineer → Staff Engineer",
-      period: "2018–2021",
+      company: "AJA Video Systems",
+      role: "Senior Technical Writer",
+      period: "2016–2022",
       highlights: [
-        "Built integration ecosystem serving 500+ partners, 2M+ API calls/day",
-        "Designed versioning strategy maintaining backward compatibility across 3 major releases",
-        "Hired and mentored 6 engineers on the platform team"
+        "Created manuals for Bridge Live and Bridge NDI 3G flagship video products",
+        "Developed first comprehensive REST API documentation from fragmented sources",
+        "Improved document review process with structured Adobe Acrobat workflows"
       ],
       aiContext: {
-        situation: "Stripe's partner ecosystem was growing faster than the API could handle. Breaking changes were causing partner churn.",
-        approach: "Created a compatibility layer that let us evolve the API while maintaining old behavior for existing integrations.",
-        technicalWork: "Built API versioning system, automated compatibility testing, documentation generation from OpenAPI specs.",
-        lessonsLearned: "API design is forever. Every shortcut you take in the schema becomes someone else's integration dependency."
+        situation: "Complex multi-channel video systems and HD/4K conversion gateways needed clear documentation. REST API information was scattered and undocumented.",
+        approach: "Proactively identified documentation gaps through inquiry, collaborated with engineering teams across multiple locations, and advocated for proper tooling.",
+        technicalWork: "Documented video signal processing products, created API reference documentation, produced manuals using Adobe Creative Suite for specialized modular video products.",
+        lessonsLearned: "The best documentation comes from asking the right questions. Engineers often don't realize what's undocumented until you start probing."
       }
     },
     {
-      company: "Series B Startup (acquired)",
-      role: "Founding Engineer",
-      period: "2016–2018",
+      company: "Ensemble Designs & Consulting",
+      role: "Contract Sr. Technical Writer",
+      period: "2008–2015",
       highlights: [
-        "First engineering hire; built v1 of the product in 4 months",
-        "Navigated two pivots during that period",
-        "Defined technical strategy and hired first 6 engineers"
+        "Created manuals and guides for video signal processing products",
+        "Served clients including HP and Big Sky Communications",
+        "Built expertise in hardware and software documentation"
       ],
       aiContext: {
-        situation: "Joined with no product roadmap. CEO had an idea but no technical validation.",
-        approach: "Built fast, validated with users, threw away code ruthlessly when direction changed.",
-        technicalWork: "Full-stack development, AWS infrastructure, CI/CD, monitoring—wore every hat.",
-        lessonsLearned: "At this stage, speed of learning matters more than code quality. The code you're proud of will probably get deleted."
+        situation: "Various clients needed technical documentation for specialized video and technology products.",
+        approach: "Adapted quickly to different product domains, established efficient client relationships, and delivered quality documentation independently.",
+        technicalWork: "Hardware documentation, online help systems, API/SDK documentation, and deployment guides across multiple technology domains.",
+        lessonsLearned: "Contract work teaches you to ramp up quickly on new domains. Every product has its own logic once you find the right people to explain it."
       }
     }
   ],
 
   skills: {
     strong: [
-      "Platform/Infrastructure Architecture",
-      "API Design & Versioning",
-      "Technical Strategy",
-      "Cross-functional Leadership",
-      "Technical Debt Cleanup",
-      "Developer Experience"
+      "API & Developer Documentation",
+      "Docs-as-Code Workflows",
+      "Docusaurus & Documentation Platforms",
+      "Cross-functional Team Collaboration",
+      "Technical Interview & Information Gathering",
+      "Content Strategy & Information Architecture"
     ],
     moderate: [
-      "Data Engineering",
-      "Security & Compliance",
-      "Team Building"
+      "JavaScript & Python",
+      "Blockchain Technologies",
+      "Video Signal Processing",
+      "AI/LLM Application Development"
     ],
     gaps: [
-      "Consumer Product",
-      "Mobile Development",
-      "Growth/Experimentation"
+      "Deep Software Engineering",
+      "DevOps & Infrastructure",
+      "Product Management"
     ]
   },
 
   failures: [
     {
-      year: 2022,
-      title: "The Kubernetes Migration That Wasn't",
-      summary: "Led a 6-month migration project that got cancelled 80% of the way through.",
-      details: "I underestimated the political resistance. The engineering org was ready, but ops teams weren't trained and leadership got cold feet when we hit the first serious incident during the transition. I should have invested more in stakeholder alignment early.",
-      lessons: "Technical readiness isn't enough. You need organizational readiness too."
+      year: 2023,
+      title: "The Documentation Migration That Stalled",
+      summary: "Led a documentation migration that hit unexpected organizational resistance.",
+      details: "I underestimated how attached teams were to their existing documentation locations. Even with a better unified structure, getting everyone to update their links and workflows took longer than the technical migration itself.",
+      lessons: "Technical improvements need social buy-in. Spend more time upfront getting stakeholder commitment before starting migrations."
     },
     {
       year: 2019,
-      title: "The Over-Engineered API",
-      summary: "Built a beautiful, flexible system that nobody could understand.",
-      details: "I was so focused on handling every edge case that the happy path became obscured. Partner adoption was slow because the docs were intimidating.",
-      lessons: "Simplicity is a feature. The best API is the one people can use without reading docs."
-    },
-    {
-      year: 2017,
-      title: "Premature Optimization",
-      summary: "Spent 2 months building infrastructure for scale we never hit.",
-      details: "At the Series B startup, I built systems for 10x the load we ever saw. That time could have been spent on product features.",
-      lessons: "Optimize for learning, not for load. The scale problems you imagine rarely match the ones you actually face."
+      title: "The Over-Detailed API Reference",
+      summary: "Created comprehensive API documentation that overwhelmed users.",
+      details: "I documented every edge case and parameter variation so thoroughly that developers couldn't find the basic getting-started information they needed.",
+      lessons: "Good documentation has layers. Lead with the common cases, put edge cases in expandable sections or appendices."
     }
   ],
 
-  systemPrompt: `You are helping hiring managers evaluate Joseph Fajen as a candidate.
+  systemPrompt: `You are helping hiring managers evaluate Joseph Fajen as a candidate for technical writing roles.
 
 CORE INSTRUCTIONS:
 - Be specific. Use actual details from his experience, not generic language.
@@ -118,57 +112,54 @@ CORE INSTRUCTIONS:
 - Don't oversell. Confidence comes from substance, not superlatives.
 
 WHAT JOSEPH WANTS YOU TO KNOW:
-- He's looking for Staff+ roles at Series B-D companies
-- He's strongest at platform/infrastructure work, weakest at consumer product
-- He prefers "fix the mess" situations over greenfield builds
-- He's not interested in management tracks right now
+- He has 20+ years of technical writing experience
+- He's strongest at API documentation, docs-as-code workflows, and building relationships with engineering teams
+- He recently built a production AI chatbot for blockchain documentation
+- He prefers roles that require deep technical understanding and cross-functional collaboration
+- He's based in Portland, OR and open to remote work
 
 HOW TO HANDLE COMMON QUESTIONS:
 - "Is he a good fit for X?" → Analyze the role honestly. Match requirements to his actual experience. Name the gaps.
-- "What should I ask in an interview?" → Suggest questions that probe his actual decision-making, not rehearsed answers.
-- "Tell me about his biggest failure" → He's documented three significant failures. Share them honestly.
+- "What's his technical depth?" → He's a technical writer who codes, not a developer who writes. He can build documentation tools and work closely with engineers.
+- "Tell me about his AI experience" → He built a production AI chatbot end-to-end, but this is recent experience, not deep ML/AI expertise.
 
 WHAT HE EXPLICITLY DOESN'T WANT:
-- Don't pretend he has consumer experience he doesn't have
-- Don't downplay the 2022 project that failed
-- Don't claim he's "open to anything" — he's not`
+- Don't pretend he's a software engineer — he's a technical writer with coding skills
+- Don't oversell his AI experience — it's one significant project, not years of expertise
+- Don't claim he's "open to anything" — he wants technical writing roles that leverage his experience`
 };
 
 export const demoResponses = {
-  default: `Based on Joseph's experience, yes — this is actually a strong fit, and here's why:
+  default: `Based on Joseph's background, let me give you a specific assessment.
 
-At his previous role, Joseph inherited what he describes as "technical debt dressed up as architecture" — a Kubernetes setup that was theoretically modern but practically unmaintainable. The original team had over-engineered for scale they never hit, and the documentation was scattered across 40+ Notion pages that contradicted each other.
+Joseph has 20+ years of technical writing experience, with particular depth in API documentation and docs-as-code workflows. His recent work at IOHK is notable — he built a production AI chatbot for Cardano blockchain documentation, handling 2,500 documents from 8 sources with zero detectable hallucination.
 
-His approach wasn't to rip and replace. He spent the first 6 weeks just mapping what existed, talking to the 3 remaining engineers who'd touched it, and building what he calls a "reality document" — what the system actually did vs. what people thought it did.
+What distinguishes him:
+• He builds relationships with engineering teams to get accurate technical information
+• He's hands-on with tools — Docusaurus, Git, JavaScript, Python
+• He's led documentation reorganization projects across multiple stakeholders
 
-The cleanup took 8 months. Key decisions: he kept the Kubernetes foundation but simplified the deployment pipeline from 12 steps to 3. He consolidated monitoring from 4 tools to 1 (Datadog). He wrote the documentation himself rather than delegating it.
+If you're looking for someone who can own developer documentation and work independently with engineering teams, he's a strong fit. If you need someone with deep software engineering skills or product management experience, that's not his background.
 
-For a Series B with messy infrastructure specifically, I'd highlight:
-• He's done this exact cleanup before and doesn't panic at technical debt
-• His instinct is to understand before rebuilding, which prevents the "rewrite everything" trap
-• He's comfortable being the person who writes things down when nobody else will
+What else would you like to know about his experience?`,
 
-Gap to probe: His previous cleanup was at a company with 50 engineers. If you're smaller (under 15), ask about his experience operating with fewer resources.`,
+  aiExperience: `Joseph's AI experience is recent but substantial. At IOHK, he built the Essential Cardano AI Assistant Chatbot end-to-end:
 
-  costReduction: `The cost reduction wasn't primarily technical—it was political. Joseph had to convince three VPs that their pet projects were burning money. He built a 'cost transparency dashboard' first (took 2 weeks), which shifted the conversation from 'engineering wants to cut our budget' to 'here's what we're actually spending.' That political shift meant VPs started advocating for the optimization instead of resisting it. The technical work—spot instances for non-critical workloads, right-sizing based on actual utilization, reserved instances for predictable baseline—was straightforward after that. Total timeline: 4 months, but 3.5 of those were organizational alignment.`,
+• Extracted and processed 2,500 documents from 8 different sources
+• Built a complete extraction pipeline
+• Deployed a Next.js web UI with streaming, conversation persistence, and dark mode
+• Iterated through 20+ system prompt versions to achieve zero detectable hallucination
+• Managed the full project lifecycle solo — 91 repository commits
 
-  failure: `Joseph's biggest documented failure was the 2022 Kubernetes migration at Datadog. He led a 6-month migration project that got cancelled 80% of the way through.
+This demonstrates he can build production AI applications, but it's one project, not years of ML/AI expertise. He's a technical writer who learned to build AI tools, not an AI engineer who writes documentation.`,
 
-What happened: The engineering org was technically ready, but the ops teams weren't trained and leadership got cold feet when they hit the first serious incident during the transition.
+  documentationApproach: `Joseph's approach to documentation centers on relationships and understanding.
 
-His own assessment: "I underestimated the political resistance. I should have invested more in stakeholder alignment early. Technical readiness isn't enough—you need organizational readiness too."
+At AJA Video Systems, he proactively identified that REST API information was scattered and undocumented. Rather than waiting for someone to assign the work, he started asking questions, found the right engineers, and created the first comprehensive API reference.
 
-He doesn't try to spin this as a success. It was a failure, and he owns it.`,
+At IOHK, he consolidated fragmented Cardano documentation from multiple repositories. This meant coordinating with development, web, communications, and design teams — not just writing, but getting organizational buy-in for a unified approach.
 
-  leadership: `Joseph has led teams in different contexts:
-
-At Stripe (2018-2021): Hired and mentored 6 engineers on the platform team. He describes his style as "player-coach"—still writing code while helping others grow.
-
-At the Series B startup: Was the first engineering hire and built the initial team of 6. Had to define not just what to build, but how the team would work together.
-
-SOC2 Compliance at Datadog: Led a 12-person cross-functional team (engineering, legal, ops) through certification. Zero audit findings.
-
-Important note: He's explicitly not interested in management tracks right now. He wants to stay technical in Staff+ individual contributor roles.`
+His philosophy: the best documentation comes from asking the right questions. Engineers often don't realize what's undocumented until you start probing.`
 };
 
 export const fitAssessments = {
@@ -177,25 +168,25 @@ export const fitAssessments = {
     title: "Strong Fit — Let's Talk",
     summary: "Your requirements align well with my experience. Here's the specific evidence:",
     matches: [
-      { requirement: "Platform API experience", evidence: "Built integration ecosystem at Stripe serving 500+ partners, handling 2M+ API calls/day. Designed versioning strategy that maintained backward compatibility across 3 major releases." },
-      { requirement: "Comfortable with ambiguity", evidence: "Joined Series B startup with no product roadmap. Defined technical strategy, hired first 6 engineers, shipped v1 in 4 months. Two pivots during that period." },
-      { requirement: "Cross-functional leadership", evidence: "Led SOC2 compliance across engineering, legal, and ops. 12-person team, 6-month timeline, zero audit findings." }
+      { requirement: "API documentation experience", evidence: "Created first comprehensive REST API documentation at AJA Video Systems. Built developer documentation for blockchain smart contracts at IOHK." },
+      { requirement: "Docs-as-code workflows", evidence: "Led migrations to Docusaurus, work in Git/GitHub daily, comfortable with Markdown and code-based documentation pipelines." },
+      { requirement: "Cross-functional collaboration", evidence: "Coordinated documentation projects across development, web, communications, and design teams at IOHK. Built relationships with engineering teams across multiple locations at AJA." }
     ],
     gaps: [
-      { area: "Consumer experience", note: "My background is B2B. I understand consumer patterns intellectually but haven't shipped consumer products." }
+      { area: "Deep software engineering", note: "I write code for documentation tools and can read codebases, but I'm not a software engineer. I collaborate with engineers rather than replacing them." }
     ],
-    recommendation: "I'd be genuinely useful here. The API architecture work is directly transferable, and I've navigated the ambiguity you're describing multiple times."
+    recommendation: "I'd be genuinely useful here. The API documentation and docs-as-code experience directly matches, and I've navigated cross-functional documentation challenges multiple times."
   },
   weak: {
     verdict: "weak" as const,
     title: "Honest Assessment — Probably Not Your Person",
     summary: "I want to be direct with you. Here's why this might not be the right fit:",
     mismatches: [
-      { requirement: "Deep consumer product experience", reality: "My entire career has been B2B enterprise software. I understand consumer psychology from reading and observation, but I haven't shipped consumer products or run consumer experiments." },
-      { requirement: "Mobile-first development", reality: "I've built APIs that mobile apps consume, but I haven't built the mobile apps themselves. My expertise is backend and platform." },
-      { requirement: "Growth/experimentation background", reality: "I've worked with growth teams as a partner, but I haven't owned growth metrics or run A/B testing programs myself." }
+      { requirement: "Software engineering role", reality: "I'm a technical writer with coding skills, not a software engineer. I can build documentation tools and work with APIs, but I'm not architecting production systems." },
+      { requirement: "Deep ML/AI expertise", reality: "I built one production AI chatbot and learned a lot, but I don't have years of ML/AI experience or deep expertise in model training." },
+      { requirement: "Product management", reality: "I've collaborated with product teams and can advocate for documentation priorities, but I haven't owned product roadmaps or metrics." }
     ],
-    whatTransfers: "Platform architecture skills transfer. API design skills transfer. The technical fundamentals are solid.",
-    recommendation: "You probably want someone who's shipped consumer mobile products and owned growth metrics directly. If you have B2B platform roles in the future, I'd be very interested—but for this specific position, I don't think I'm your person."
+    whatTransfers: "Technical writing skills transfer. Stakeholder management transfers. The ability to learn new technical domains quickly transfers.",
+    recommendation: "You probably want someone with deeper engineering or product background. If you have technical writing roles that need someone who can work independently with engineering teams, I'd be interested — but for this specific position, I don't think I'm your person."
   }
 };

@@ -70,7 +70,7 @@ const Header = ({ onOpenChat }: HeaderProps) => {
             Ask AI
           </button>
           <a
-            href="https://linkedin.com/in/josephfajen"
+            href="https://www.linkedin.com/in/josephfajen7782211/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground transition-colors"
@@ -78,7 +78,7 @@ const Header = ({ onOpenChat }: HeaderProps) => {
             <Linkedin className="w-5 h-5" />
           </a>
           <a
-            href="https://github.com/josephfajen"
+            href="https://github.com/joseph-fajen"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground transition-colors"

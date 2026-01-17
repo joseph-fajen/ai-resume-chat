@@ -1,6 +1,10 @@
 import { josephProfile } from "@/data/joseph-fajen";
 import ExperienceCard from "./ExperienceCard";
 
+// Generate URL-friendly ID from company name
+export const companyToId = (company: string) =>
+  `exp-${company.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "")}`;
+
 const Experience = () => {
   return (
     <section id="experience" className="py-24 px-6">
@@ -22,6 +26,7 @@ const Experience = () => {
               key={exp.company}
               {...exp}
               index={index}
+              id={companyToId(exp.company)}
             />
           ))}
         </div>
