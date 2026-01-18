@@ -3,15 +3,34 @@
 export const josephProfile = {
   name: "Joseph Fajen",
   title: "Senior Technical Writer",
-  subtitle: "API documentation, blockchain technologies, and docs-as-code workflows",
+  subtitle: "Technical writer who builds — AI chatbots, documentation systems, and developer tools",
   location: "Portland, OR",
-  status: "Open to Senior Technical Writer roles",
+  status: "Seeking Senior Technical Writer or Documentation Lead roles",
+
+  // Differentiator: Lead with what makes him unique
+  positioning: "I don't just write about technology — I build with it. Most recently shipped a production AI chatbot solo. Looking for roles where technical depth and strategic thinking matter.",
 
   companies: ["IOHK", "AJA Video Systems", "Ensemble Designs"],
 
-  summary: `20+ years transforming complex technical concepts into user-friendly documentation.
-Expert at building relationships with developers and product teams.
-I prefer documentation challenges that require deep technical understanding and cross-functional collaboration.`,
+  summary: `Technical writer who ships software. 20+ years turning complex systems into clear documentation.
+Recently built a production AI chatbot end-to-end: 2,500 documents, zero hallucination, deployed and running.
+I work best on documentation challenges that require real technical depth and strategic ownership.`,
+
+  // Featured project elevated from experience highlights
+  featuredProject: {
+    name: "Essential Cardano AI Assistant",
+    role: "Sole developer and architect",
+    description: "Production AI chatbot for blockchain documentation",
+    highlights: [
+      "Built complete system solo — 91 commits, full project lifecycle",
+      "Extracted and processed 2,500 documents from 8 different sources",
+      "Achieved zero detectable hallucination through 20+ prompt iterations",
+      "Next.js frontend with streaming responses and conversation persistence",
+      "Deployed on Railway infrastructure, currently in production"
+    ],
+    technicalStack: ["Next.js", "Python", "Claude API", "Railway", "Vector embeddings"],
+    why: "This project demonstrates I can own and ship a complete software product, not just write docs about one."
+  },
 
   experience: [
     {
@@ -65,24 +84,25 @@ I prefer documentation challenges that require deep technical understanding and 
   ],
 
   skills: {
+    // Reframed to emphasize builder/technical differentiators
     strong: [
       "API & Developer Documentation",
-      "Docs-as-Code Workflows",
-      "Docusaurus & Documentation Platforms",
-      "Cross-functional Team Collaboration",
-      "Technical Interview & Information Gathering",
-      "Content Strategy & Information Architecture"
+      "Building Documentation Tools (Python, JavaScript)",
+      "AI/LLM Application Development",
+      "Docs-as-Code Workflows (Git, Markdown, CI/CD)",
+      "Documentation Strategy & Information Architecture",
+      "Docusaurus & Static Site Generators"
     ],
     moderate: [
-      "JavaScript & Python",
-      "Blockchain Technologies",
+      "Blockchain Technologies (Cardano, smart contracts)",
       "Video Signal Processing",
-      "AI/LLM Application Development"
+      "Technical Project Leadership",
+      "System Design for Documentation"
     ],
     gaps: [
-      "Deep Software Engineering",
+      "Deep Software Engineering (not an SWE, but code-literate)",
       "DevOps & Infrastructure",
-      "Product Management"
+      "People Management (have led projects, not teams)"
     ]
   },
 
@@ -105,36 +125,57 @@ I prefer documentation challenges that require deep technical understanding and 
 };
 
 export const demoResponses = {
-  default: `Based on Joseph's background, let me give you a specific assessment.
+  default: `Here's what makes Joseph different from most technical writers: he ships software.
 
-Joseph has 20+ years of technical writing experience, with particular depth in API documentation and docs-as-code workflows. His recent work at IOHK is notable — he built a production AI chatbot for Cardano blockchain documentation, handling 2,500 documents from 8 sources with zero detectable hallucination.
+Most recently, he built a production AI chatbot solo — 2,500 documents, zero hallucination, currently running in production. That's not "I wrote docs about AI," that's "I architected and deployed an AI application."
 
-What distinguishes him:
-• He builds relationships with engineering teams to get accurate technical information
-• He's hands-on with tools — Docusaurus, Git, JavaScript, Python
-• He's led documentation reorganization projects across multiple stakeholders
+He has 20+ years of technical writing experience, but his differentiator is technical depth. He reads codebases, writes Python and JavaScript, and can go deep with engineers as a peer rather than just interviewing them for content.
 
-If you're looking for someone who can own developer documentation and work independently with engineering teams, he's a strong fit. If you need someone with deep software engineering skills or product management experience, that's not his background.
+If you're looking for someone who can own documentation strategy and build the tools to support it, he's a strong fit. If you need a pure software engineer or product manager, that's not his background — but he's more technical than most writers you'll meet.
 
-What else would you like to know about his experience?`,
+What specific aspect would you like to dig into?`,
 
-  aiExperience: `Joseph's AI experience is recent but substantial. At IOHK, he built the Essential Cardano AI Assistant Chatbot end-to-end:
+  aiProject: `The Essential Cardano AI Assistant was a solo project from architecture to deployment. Here's the technical breakdown:
 
-• Extracted and processed 2,500 documents from 8 different sources
-• Built a complete extraction pipeline
-• Deployed a Next.js web UI with streaming, conversation persistence, and dark mode
+• Extracted 2,500 documents from 8 different sources (GitHub repos, wikis, websites)
+• Built a complete ingestion pipeline in Python
+• Developed a Next.js frontend with streaming responses and conversation persistence
 • Iterated through 20+ system prompt versions to achieve zero detectable hallucination
-• Managed the full project lifecycle solo — 91 repository commits
+• Deployed on Railway infrastructure — 91 commits, full project lifecycle
 
-This demonstrates he can build production AI applications, but it's one project, not years of ML/AI expertise. He's a technical writer who learned to build AI tools, not an AI engineer who writes documentation.`,
+The hardest part wasn't the code — it was prompt engineering. Getting an LLM to accurately represent blockchain documentation without hallucinating required extensive testing and iteration.
 
-  documentationApproach: `Joseph's approach to documentation centers on relationships and understanding.
+This demonstrates he can own a complete software product, not just write about one. But to be clear: this is one substantial project, not years of ML/AI engineering. He's a technical writer who builds, not an AI engineer who writes.`,
 
-At AJA Video Systems, he proactively identified that REST API information was scattered and undocumented. Rather than waiting for someone to assign the work, he started asking questions, found the right engineers, and created the first comprehensive API reference.
+  technicalDepth: `Yes, Joseph is technical enough to work directly with engineers — and that's a key differentiator.
 
-At IOHK, he consolidated fragmented Cardano documentation from multiple repositories. This meant coordinating with development, web, communications, and design teams — not just writing, but getting organizational buy-in for a unified approach.
+He reads codebases to understand how systems actually work, not just what engineers tell him. He writes Python and JavaScript for documentation tooling. He built a production AI chatbot from scratch, handling everything from data extraction to deployment.
 
-His philosophy: the best documentation comes from asking the right questions. Engineers often don't realize what's undocumented until you start probing.`
+At AJA Video Systems, he created the first comprehensive REST API documentation by diving into the codebase when the information wasn't documented anywhere else. Engineers often don't realize what's undocumented until someone technical enough starts asking the right questions.
+
+That said, he's not a software engineer. He won't be architecting your distributed systems or optimizing your database queries. He's a technical writer who can hold his own in technical discussions and build tools to support documentation — that's the sweet spot.`,
+
+  failure: `Joseph documented two failures he's willing to discuss openly:
+
+**The Documentation Migration That Stalled (2023)**
+He led a documentation migration that hit unexpected organizational resistance. The technical work was solid, but he underestimated how attached teams were to their existing documentation locations. Getting everyone to update their links and workflows took longer than the migration itself.
+
+Lesson: Technical improvements need social buy-in. He now spends more time upfront getting stakeholder commitment before starting migrations.
+
+**The Over-Detailed API Reference (2019)**
+He documented every edge case and parameter variation so thoroughly that developers couldn't find the basic getting-started information they needed. Comprehensive became overwhelming.
+
+Lesson: Good documentation has layers. Lead with common cases, put edge cases in expandable sections or appendices.
+
+He shares these because honesty about failures is more useful than a polished highlight reel.`,
+
+  leadershipReady: `There's a meaningful difference, and Joseph sits in an interesting spot.
+
+A technical writer executes: takes assignments, interviews engineers, produces documentation. A documentation lead owns strategy: decides what to document, how to structure information architecture, what tools to use, how to measure success.
+
+Joseph has done both. At IOHK, he didn't just write docs — he led the migration from Read the Docs to Docusaurus, unified fragmented documentation across multiple repositories, and made architectural decisions about information structure. He's driven documentation strategy across multiple teams.
+
+What he hasn't done is manage people directly. He's led projects and driven decisions, but hasn't had direct reports. If you need someone who can own documentation strategy as a senior IC or lead without people management, that's his sweet spot. If you need someone who's managed a team of writers, that's a gap.`
 };
 
 export const fitAssessments = {
@@ -143,25 +184,27 @@ export const fitAssessments = {
     title: "Strong Fit — Let's Talk",
     summary: "Your requirements align well with my experience. Here's the specific evidence:",
     matches: [
-      { requirement: "API documentation experience", evidence: "Created first comprehensive REST API documentation at AJA Video Systems. Built developer documentation for blockchain smart contracts at IOHK." },
-      { requirement: "Docs-as-code workflows", evidence: "Led migrations to Docusaurus, work in Git/GitHub daily, comfortable with Markdown and code-based documentation pipelines." },
-      { requirement: "Cross-functional collaboration", evidence: "Coordinated documentation projects across development, web, communications, and design teams at IOHK. Built relationships with engineering teams across multiple locations at AJA." }
+      { requirement: "Technical depth", evidence: "Built a production AI chatbot solo. Read codebases, write Python/JavaScript, can go deep with engineers as a peer." },
+      { requirement: "Documentation strategy ownership", evidence: "Led documentation unification at IOHK, made architectural decisions about information structure, drove migrations across multiple teams." },
+      { requirement: "API & developer documentation", evidence: "Created first comprehensive REST API documentation at AJA Video Systems. Built developer documentation for blockchain smart contracts at IOHK." },
+      { requirement: "Docs-as-code workflows", evidence: "Led migrations to Docusaurus, work in Git/GitHub daily, build tooling in Python and JavaScript." }
     ],
     gaps: [
-      { area: "Deep software engineering", note: "I write code for documentation tools and can read codebases, but I'm not a software engineer. I collaborate with engineers rather than replacing them." }
+      { area: "People management", note: "I've led projects and driven decisions, but haven't had direct reports. I'm a senior IC, not a people manager." }
     ],
-    recommendation: "I'd be genuinely useful here. The API documentation and docs-as-code experience directly matches, and I've navigated cross-functional documentation challenges multiple times."
+    recommendation: "I'd be genuinely useful here. I can own documentation strategy, build the tools to support it, and work directly with engineers. That combination is rare."
   },
   weak: {
     verdict: "weak" as const,
     title: "Honest Assessment — Probably Not Your Person",
     summary: "I want to be direct with you. Here's why this might not be the right fit:",
     mismatches: [
-      { requirement: "Software engineering role", reality: "I'm a technical writer with coding skills, not a software engineer. I can build documentation tools and work with APIs, but I'm not architecting production systems." },
-      { requirement: "Deep ML/AI expertise", reality: "I built one production AI chatbot and learned a lot, but I don't have years of ML/AI experience or deep expertise in model training." },
-      { requirement: "Product management", reality: "I've collaborated with product teams and can advocate for documentation priorities, but I haven't owned product roadmaps or metrics." }
+      { requirement: "Software engineering role", reality: "I'm a technical writer who builds, not a software engineer. I shipped an AI chatbot, but I'm not going to architect your distributed systems." },
+      { requirement: "Deep ML/AI expertise", reality: "I built one production AI chatbot and learned a lot, but it's one project — not years of ML/AI engineering." },
+      { requirement: "People management", reality: "I've led projects and documentation strategy, but I haven't managed a team of writers. If you need a people manager, that's not me." },
+      { requirement: "Product management", reality: "I think strategically about documentation as a product, but I haven't owned product roadmaps or P&L." }
     ],
-    whatTransfers: "Technical writing skills transfer. Stakeholder management transfers. The ability to learn new technical domains quickly transfers.",
-    recommendation: "You probably want someone with deeper engineering or product background. If you have technical writing roles that need someone who can work independently with engineering teams, I'd be interested — but for this specific position, I don't think I'm your person."
+    whatTransfers: "Technical depth transfers. Strategic thinking transfers. The ability to own and ship projects independently transfers.",
+    recommendation: "If you have technical writing or documentation lead roles that need someone who can build and think strategically, I'm interested. But for this specific position, I don't think I'm your person."
   }
 };

@@ -15,37 +15,55 @@ interface AIChatProps {
 }
 
 const suggestedQuestions = [
-  "Would this person be good for a Series B startup with messy data infrastructure?",
-  "How did they reduce costs by $1.2M? Was it technical or political?",
-  "Tell me about their biggest failure.",
-  "What kind of leadership experience do they have?",
+  "Tell me about the AI chatbot you built — what was the technical approach?",
+  "Is this person technical enough to work directly with engineers?",
+  "What's the difference between a technical writer and a documentation lead?",
+  "Tell me about a failure and what you learned from it.",
 ];
 
-// Build profile context string for API
+// Build profile context string for API - structured to emphasize differentiators
 const buildProfileContext = () => {
-  return `
-Name: ${josephProfile.name}
-Title: ${josephProfile.title}
-Status: ${josephProfile.status}
-Summary: ${josephProfile.summary}
+  const fp = josephProfile.featuredProject;
 
-Experience:
+  return `
+NAME: ${josephProfile.name}
+POSITIONING: ${josephProfile.positioning}
+STATUS: ${josephProfile.status}
+
+FEATURED PROJECT (lead with this - it's a key differentiator):
+${fp.name} - ${fp.description}
+Role: ${fp.role}
+Technical stack: ${fp.technicalStack.join(", ")}
+Key accomplishments:
+${fp.highlights.map(h => `  • ${h}`).join("\n")}
+Why this matters: ${fp.why}
+
+SUMMARY:
+${josephProfile.summary}
+
+EXPERIENCE:
 ${josephProfile.experience
   .map(
     (exp) => `
-- ${exp.company} (${exp.period}): ${exp.role}
-  ${exp.highlights.join("; ")}
-  Context: ${exp.aiContext.situation} ${exp.aiContext.approach}
+${exp.company} (${exp.period}): ${exp.role}
+Highlights: ${exp.highlights.join("; ")}
+Situation: ${exp.aiContext.situation}
+Approach: ${exp.aiContext.approach}
+Technical work: ${exp.aiContext.technicalWork}
+Lessons learned: ${exp.aiContext.lessonsLearned}
 `
   )
   .join("")}
 
-Skills - Strong: ${josephProfile.skills.strong.join(", ")}
-Skills - Moderate: ${josephProfile.skills.moderate.join(", ")}
-Skills - Gaps: ${josephProfile.skills.gaps.join(", ")}
+SKILLS:
+Strong: ${josephProfile.skills.strong.join(", ")}
+Moderate: ${josephProfile.skills.moderate.join(", ")}
+Gaps (be honest about these): ${josephProfile.skills.gaps.join(", ")}
 
-Documented Failures:
-${josephProfile.failures.map((f) => `- ${f.year}: ${f.title} - ${f.summary}`).join("\n")}
+DOCUMENTED FAILURES (share these honestly when relevant):
+${josephProfile.failures.map((f) => `- ${f.year}: ${f.title}
+  What happened: ${f.details}
+  Lesson: ${f.lessons}`).join("\n")}
 `;
 };
 
@@ -72,17 +90,17 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
 
   const getResponse = (question: string): string => {
     const q = question.toLowerCase();
-    if (q.includes("series b") || q.includes("infrastructure") || q.includes("messy")) {
-      return demoResponses.default;
+    if (q.includes("chatbot") || q.includes("ai") || q.includes("technical approach")) {
+      return demoResponses.aiProject;
     }
-    if (q.includes("cost") || q.includes("$1.2m") || q.includes("reduce")) {
-      return demoResponses.costReduction;
+    if (q.includes("technical enough") || q.includes("engineer") || q.includes("technical depth")) {
+      return demoResponses.technicalDepth;
     }
-    if (q.includes("failure") || q.includes("mistake") || q.includes("wrong")) {
+    if (q.includes("failure") || q.includes("mistake") || q.includes("learned")) {
       return demoResponses.failure;
     }
-    if (q.includes("leadership") || q.includes("lead") || q.includes("team") || q.includes("manage")) {
-      return demoResponses.leadership;
+    if (q.includes("lead") || q.includes("documentation lead") || q.includes("difference")) {
+      return demoResponses.leadershipReady;
     }
     return demoResponses.default;
   };
