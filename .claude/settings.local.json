@@ -3,7 +3,18 @@
     "allow": [
       "Bash(tree:*)",
       "WebSearch",
-      "WebFetch(domain:docs.anthropic.com)"
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run lint)",
+      "Bash(npx tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(uvicorn app.main:app:*)",
+      "Bash(lsof:*)"
     ]
   }
 }

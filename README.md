@@ -49,10 +49,7 @@ Visit http://localhost:8080. The frontend proxies `/api/*` requests to the backe
 ### Alternative: Docker Compose
 
 ```bash
-# Set your API key
-export ANTHROPIC_API_KEY=sk-ant-...
-
-# Run both services
+# Run both services (reads API key from backend/.env)
 docker-compose up
 ```
 
