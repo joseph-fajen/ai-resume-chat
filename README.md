@@ -8,31 +8,88 @@ An interactive resume website with a real AI chat interface powered by Anthropic
 
 ### Prerequisites
 
-- Node.js 18+
-- Python 3.12+
 - Anthropic API key ([get one here](https://console.anthropic.com/))
+- **For Docker:** Docker Desktop
+- **For native development:** Node.js 18+ and Python 3.12+
 
-### Setup
+### Initial Setup (Required for All Methods)
 
 ```bash
 # Clone and enter the project
 git clone <repo-url>
 cd sample-ai-resume
 
-# Backend setup
+# Configure your API key
+cp backend/.env.example backend/.env
+# Edit backend/.env and add your ANTHROPIC_API_KEY
+```
+
+---
+
+## Running the Application
+
+### Option 1: Docker Compose (Recommended for Quick Start)
+
+**Best for:** First-time setup, demos, testing the full stack without installing dependencies.
+
+```bash
+# Start both services (frontend + backend)
+docker compose up
+
+# Or run in background (detached mode)
+docker compose up -d
+```
+
+| Service  | URL                    |
+|----------|------------------------|
+| Frontend | http://localhost:8080  |
+| Backend  | http://localhost:8000  |
+
+**Stop the services:**
+
+```bash
+# If running in foreground: Ctrl+C
+
+# If running in background (-d):
+docker compose down
+
+# Stop and remove all data (clean slate):
+docker compose down -v --rmi local
+```
+
+**View logs (when running in background):**
+
+```bash
+docker compose logs -f           # All services
+docker compose logs -f frontend  # Frontend only
+docker compose logs -f backend   # Backend only
+```
+
+**Rebuild after code changes:**
+
+```bash
+docker compose up --build
+```
+
+---
+
+### Option 2: Native Development (Recommended for Active Development)
+
+**Best for:** Iterating on code, debugging, faster hot-reload, IDE integration.
+
+**One-time setup:**
+
+```bash
+# Backend dependencies
 cd backend
-cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
 pip install -e .
 
-# Frontend setup
+# Frontend dependencies
 cd ../frontend
 npm install
 ```
 
-### Run Locally
-
-Open two terminals:
+**Start services (requires two terminals):**
 
 ```bash
 # Terminal 1: Backend (port 8000)
@@ -44,14 +101,24 @@ cd frontend
 npm run dev
 ```
 
+**Stop:** Press `Ctrl+C` in each terminal.
+
 Visit http://localhost:8080. The frontend proxies `/api/*` requests to the backend.
 
-### Alternative: Docker Compose
+---
 
-```bash
-# Run both services (reads API key from backend/.env)
-docker-compose up
-```
+## When to Use Each Method
+
+| Scenario | Recommended | Why |
+|----------|-------------|-----|
+| **First time running the project** | Docker | No dependency installation needed |
+| **Quick demo or testing** | Docker | Single command, consistent environment |
+| **Active frontend development** | Native | Faster hot-reload, better IDE integration |
+| **Active backend development** | Native | Easier debugging, faster iteration |
+| **CI/CD pipelines** | Docker | Reproducible builds |
+| **Production deployment** | Docker (single-service) | See Deployment section below |
+
+**Hybrid approach:** Run backend natively for debugging while using Docker for other services, or vice versa. Just ensure ports don't conflict.
 
 ---
 
@@ -234,16 +301,49 @@ ENVIRONMENT=development
 
 ## Deployment
 
-The project is configured for Railway single-service deployment:
+### Production Architecture
 
-1. FastAPI serves the built frontend as static files
-2. `railway.json` defines the build and start commands
-3. Set `ANTHROPIC_API_KEY` in Railway environment variables
+In production, the app runs as a **single Docker container**: FastAPI serves both the API and the pre-built frontend as static files. This differs from local development where frontend and backend run separately.
+
+```
+┌─────────────────────────────────────┐
+│         Production Container         │
+│  ┌─────────────────────────────────┐│
+│  │          FastAPI                ││
+│  │  /api/*  → Chat, Contact, Health││
+│  │  /*      → Static frontend files││
+│  └─────────────────────────────────┘│
+└─────────────────────────────────────┘
+```
+
+### Deploy to Railway
+
+1. Connect your GitHub repository to Railway
+2. Set `ANTHROPIC_API_KEY` in Railway environment variables
+3. Railway auto-detects `railway.json` for build/start commands
+
+### Manual Production Build
 
 ```bash
-# Build for production (creates backend/static/)
+# Build frontend and copy to backend/static/
 cd frontend && npm run build && cp -r dist ../backend/static
+
+# Build production Docker image
+docker build -t ai-resume .
+
+# Run production container
+docker run -p 8000:8000 -e ANTHROPIC_API_KEY=sk-ant-... ai-resume
 ```
+
+### Docker Files Explained
+
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | **Local development** - runs frontend and backend as separate containers with hot-reload |
+| `Dockerfile` (root) | **Production** - single container serving both API and static frontend |
+| `backend/Dockerfile` | Production backend build (requires pre-built frontend in `backend/static/`) |
+| `backend/Dockerfile.dev` | Development backend build (no static files needed) |
+| `frontend/Dockerfile.dev` | Development frontend build with hot-reload |
 
 ---
 
