@@ -23,20 +23,21 @@ const suggestedQuestions = [
 
 // Build profile context string for API - structured to emphasize differentiators
 const buildProfileContext = () => {
-  const fp = josephProfile.featuredProject;
+  const formatProject = (fp: typeof josephProfile.featuredProjects[0]) => `
+${fp.name} - ${fp.description}
+Role: ${fp.role}
+Technical stack: ${fp.technicalStack.join(", ")}
+Key accomplishments:
+${fp.highlights.map(h => `  • ${h}`).join("\n")}
+Why this matters: ${fp.why}`;
 
   return `
 NAME: ${josephProfile.name}
 POSITIONING: ${josephProfile.positioning}
 STATUS: ${josephProfile.status}
 
-FEATURED PROJECT (lead with this - it's a key differentiator):
-${fp.name} - ${fp.description}
-Role: ${fp.role}
-Technical stack: ${fp.technicalStack.join(", ")}
-Key accomplishments:
-${fp.highlights.map(h => `  • ${h}`).join("\n")}
-Why this matters: ${fp.why}
+FEATURED PROJECTS (lead with these - they're key differentiators):
+${josephProfile.featuredProjects.map(formatProject).join("\n")}
 
 SUMMARY:
 ${josephProfile.summary}
@@ -131,6 +132,7 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
     setDisplayedResponse("");
 
     let fullResponse = "";
+    let responseAdded = false;
 
     // Create abort controller for this request
     abortControllerRef.current = new AbortController();
@@ -151,9 +153,12 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
             fullResponse += data.content;
             setDisplayedResponse(fullResponse);
           } else if (event.event === "done") {
-            setIsTyping(false);
-            setMessages((prev) => [...prev, { role: "assistant", content: fullResponse }]);
-            setDisplayedResponse("");
+            if (!responseAdded) {
+              responseAdded = true;
+              setIsTyping(false);
+              setMessages((prev) => [...prev, { role: "assistant", content: fullResponse }]);
+              setDisplayedResponse("");
+            }
           } else if (event.event === "error") {
             console.error("Stream error:", event.data);
             setIsTyping(false);
@@ -171,8 +176,9 @@ const AIChat = ({ isOpen, onClose }: AIChatProps) => {
           throw err; // Stop retrying
         },
         onclose() {
-          // If we get here without a full response, it means connection was closed unexpectedly
-          if (fullResponse && !messages.some(m => m.content === fullResponse)) {
+          // Handle unexpected close - only add if not already added by "done" event
+          if (fullResponse && !responseAdded) {
+            responseAdded = true;
             setIsTyping(false);
             setMessages((prev) => [...prev, { role: "assistant", content: fullResponse }]);
             setDisplayedResponse("");
