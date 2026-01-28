@@ -65,6 +65,17 @@ DOCUMENTED FAILURES (share these honestly when relevant):
 ${josephProfile.failures.map((f) => `- ${f.year}: ${f.title}
   What happened: ${f.details}
   Lesson: ${f.lessons}`).join("\n")}
+
+NARRATIVES (use these for richer, story-based answers):
+${Object.entries(josephProfile.narratives).map(([key, value]) => `- ${key}: ${value}`).join("\n")}
+
+CONTENT ACCURACY RULES (NEVER violate these):
+${josephProfile.contentGuidelines.accuracyRules.map(rule => `- ${rule}`).join("\n")}
+Identity: ${josephProfile.contentGuidelines.identity}
+Framing: ${josephProfile.contentGuidelines.framingPreference}
+
+EMPHASIS ANGLES (adapt based on question type):
+${Object.entries(josephProfile.emphasisAngles).map(([angle, desc]) => `- ${angle}: ${desc}`).join("\n")}
 `;
 };
 

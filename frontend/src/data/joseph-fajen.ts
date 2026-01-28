@@ -17,7 +17,7 @@ export const josephProfile = {
 
 I own documentation projects end-to-end: strategy, architecture, content, tooling, and cross-functional collaboration. At IOHK, I transformed fragmented blockchain documentation into unified, authoritative sites — authoring 17,900+ lines across 124 files as the dominant contributor.
 
-I also build: shipped a production AI chatbot solo, mass-processing 2,500 documents with zero hallucination. I work best on documentation challenges that require strategic ownership and technical depth.`,
+I also build: built and deployed a full-stack AI chatbot solo, mass-processing 2,500 documents with zero hallucination. I work best on documentation challenges that require strategic ownership and technical depth.`,
 
   // Three featured projects elevated from experience
   featuredProjects: [
@@ -33,21 +33,21 @@ I also build: shipped a production AI chatbot solo, mass-processing 2,500 docume
         "Documented 7-service runtime architecture and 91-schema OpenAPI specification"
       ],
       technicalStack: ["Docusaurus", "TypeScript", "MDX", "GitHub workflows", "Mermaid diagrams"],
-      why: "This project demonstrates I can own a complete documentation ecosystem — from consolidating chaos into structure, to designing information architecture, to shipping production content at scale."
+      why: "This project demonstrates I can own a complete documentation ecosystem — from consolidating chaos into structure, to designing information architecture, to shipping content at scale."
     },
     {
       name: "Essential Cardano AI Assistant",
       role: "Sole developer and architect",
-      description: "Production AI chatbot for blockchain documentation",
+      description: "AI chatbot for blockchain documentation",
       highlights: [
         "Built complete system solo — 91 commits, full project lifecycle",
         "Extracted and processed 2,500 documents from 8 different sources",
         "Achieved zero detectable hallucination through 20+ prompt iterations",
         "Next.js frontend with streaming responses and conversation persistence",
-        "Deployed on Railway infrastructure, currently in production"
+        "Deployed on Railway infrastructure as test deployment"
       ],
       technicalStack: ["Next.js", "Python", "Claude API", "Railway", "Vector embeddings"],
-      why: "This project demonstrates I can build software, not just write about it. When documentation needed a better discovery experience, I shipped a production AI application to solve the problem."
+      why: "This project demonstrates I can build software, not just write about it. When documentation needed a better discovery experience, I built and deployed a full-stack AI application to solve the problem."
     },
     {
       name: "ChatDoc-InsightMiner-PromptLab + Blockfrost Platform Docs",
@@ -73,7 +73,7 @@ I also build: shipped a production AI chatbot solo, mass-processing 2,500 docume
       highlights: [
         "Owned Marlowe documentation end-to-end: 17,900+ lines, 124 files, 78% of repository as top contributor",
         "Designed persona-based information architecture addressing 5 user types from builders to blockchain engineers",
-        "Built two documentation tools: Essential Cardano AI Assistant (production chatbot) and ChatDoc-InsightMiner-PromptLab (community analysis toolkit)",
+        "Built two documentation tools: Essential Cardano AI Assistant (full-stack chatbot) and ChatDoc-InsightMiner-PromptLab (community analysis toolkit)",
         "Created ChatDoc toolkit with vector databases and multi-LLM comparison to derive 25+ FAQ entries from Discord community discussions",
         "Expanded Blockfrost Platform documentation by ~60% through community-sourced content strategy",
         "Implemented docs-as-code workflows using Docusaurus, TypeScript, and GitHub PR-based reviews"
@@ -81,7 +81,7 @@ I also build: shipped a production AI chatbot solo, mass-processing 2,500 docume
       aiContext: {
         situation: "Marlowe documentation was fragmented across multiple repositories and websites — duplicated content, unclear authority, outdated information mixed with current. Blockfrost Icebreakers community had knowledge trapped in Discord with no structured FAQ. Both projects lacked traditional feedback loops.",
         approach: "For Marlowe, I consolidated everything into a single authoritative site using Docusaurus with dual-track information architecture. For Blockfrost, I built ChatDoc-InsightMiner-PromptLab — a Python toolkit that analyzes Discord discussions using vector databases and multi-LLM comparison to derive documentation from real user needs.",
-        technicalWork: "Authored 17,900+ lines for Marlowe across 124 files. Built production AI chatbot with Next.js. Created ChatDoc toolkit with vector database integration, multi-LLM analysis (OpenAI, Anthropic, Gemini), and specialized prompts for FAQ generation. Derived 25+ FAQ entries from community chat analysis.",
+        technicalWork: "Authored 17,900+ lines for Marlowe across 124 files. Built full-stack AI chatbot with Next.js. Created ChatDoc toolkit with vector database integration, multi-LLM analysis (OpenAI, Anthropic, Gemini), and specialized prompts for FAQ generation. Derived 25+ FAQ entries from community chat analysis.",
         lessonsLearned: "When documentation challenges require systematic solutions, build tools. I created two documentation tools at IOHK: an AI chatbot for discovery and an analysis toolkit for community-sourced content. This pattern — technical writer who codes — differentiates my approach."
       }
     },
@@ -159,7 +159,38 @@ I also build: shipped a production AI chatbot solo, mass-processing 2,500 docume
       details: "I documented every edge case and parameter variation so thoroughly that developers couldn't find the basic getting-started information they needed.",
       lessons: "Good documentation has layers. Lead with the common cases, put edge cases in expandable sections or appendices."
     }
-  ]
+  ],
+
+  // Narrative content for richer AI responses
+  narratives: {
+    marloweTransformation: "The 'Uncle's Garage' Transformation: Cardano's Marlowe smart contract platform had documentation scattered across multiple repositories — like walking into an uncle's garage where valuable tools are buried under years of accumulated chaos. I took sole ownership of the documentation transformation. Over 13 months, I authored 17,900+ lines across 124 files, accounting for 78% of all commits. I designed an information architecture with 5 distinct user personas and visual pathway diagrams, documented a 91-schema OpenAPI specification for the 7-service runtime architecture, and established weekly engineering syncs that resulted in 59 merged PRs. The result: a unified, authoritative documentation site built with a pre-adoption strategy — comprehensive docs ready for users who don't exist yet.",
+    aiAssistantStory: "When Documentation Needed AI: The Cardano ecosystem spans thousands of documents across dozens of sources. Users needed instant, accurate answers — but any AI assistant in this space risked hallucination, which in blockchain could mean real financial consequences. I built a full-stack AI chatbot end-to-end, solo. I ingested 2,500 documents from 8 sources, iterated through 20+ system prompt versions until achieving zero detectable hallucination, and deployed a Next.js web UI with streaming and conversation persistence. 91 commits from concept to deployment.",
+    chatdocStory: "Building Tools When Documentation Requires It: Community questions on Discord often revealed documentation gaps, but there was no systematic way to identify patterns. I built ChatDoc-InsightMiner-PromptLab — a toolkit that analyzes community conversations, identifies recurring questions, and derives documentation from real user needs. I created a multi-LLM comparison framework testing OpenAI, Anthropic, and Gemini APIs. Result: 25+ FAQ entries derived from Discord analysis, plus a reusable methodology for community-sourced documentation.",
+    educationPhilosophy: "B.A., History and Philosophy — U.C. Davis, 1989. The philosophy taught me to question assumptions. The history taught me that context matters. Both inform how I approach documentation — always asking 'why?' and 'for whom?'",
+    earlierCareer: "15 years building documentation expertise (2001-2015): From HP consulting to startup API documentation to transforming a college's static website into a dynamic database-driven platform — each role added another dimension to my understanding of how documentation serves users. At AJA Video Systems (2016-2022), I created the company's first comprehensive REST API documentation and documented complex multi-channel video systems and HD/4K conversion gateways.",
+    linkedInSummary: "I've learned that I do my best work when I own a documentation project completely — not just the writing, but the architecture, tooling, and delivery. Over 20+ years, I've discovered that great technical documentation isn't about clear prose alone. It's about designing user journeys that guide people from confusion to clarity, building information architecture around how different personas actually learn, and creating tools when standard approaches fall short."
+  },
+
+  // Accuracy constraints — injected into system prompt
+  contentGuidelines: {
+    identity: "Technical Writer Who Builds Tools (not 'Who Ships Code')",
+    framingPreference: "I'm a technical writer who develops (not 'developer who writes')",
+    accuracyRules: [
+      "Essential Cardano AI Assistant was deployed to a test environment for testing and evaluation — never publicly released. Say 'built and deployed' or 'test deployment', NOT 'shipped production' or 'production deployment'.",
+      "Marlowe tutorials and Starter Kit: COLLABORATED with Knowledge Engineer and Software Developer to integrate 41 tutorial pages. Do NOT say 'Built' or 'Created' the tutorials (implies sole authorship).",
+      "OpenAPI specification: Worked closely with software developer to integrate the 91-schema spec. Do NOT say 'Created' or 'Authored' the spec.",
+      "Identity: 'Technical Writer Who Builds Tools' — not 'Who Ships Code'. 'Technical writer who develops' — not 'developer who writes'."
+    ]
+  },
+
+  // Emphasis angles for different question types
+  emphasisAngles: {
+    ownership: "Documentation strategist who owns the full lifecycle — architecture, content, tooling, and delivery. Sole owner of Marlowe docs for 13 months, 78% of all commits.",
+    builder: "Technical writer who builds tools and ships software when documentation challenges require it. Built two documentation tools at IOHK: AI chatbot and ChatDoc analysis toolkit.",
+    apiDeveloper: "API and developer documentation specialist. Documented 91-schema OpenAPI spec, 7-service microservices architecture, REST APIs. Created first comprehensive API docs at AJA Video Systems.",
+    mlTooling: "Hands-on with Python, LLMs, and vector databases. Built chatbot with Claude API, created multi-LLM comparison framework (OpenAI, Anthropic, Gemini). One substantial AI project — not years of ML engineering. Honest about scope.",
+    verification: "Establishes verification processes, works hands-on in development environments. Every code example compiles before inclusion. Accuracy has security implications in blockchain documentation."
+  }
 };
 
 export const demoResponses = {
@@ -168,7 +199,7 @@ export const demoResponses = {
 At IOHK, he didn't just write docs — he transformed fragmented blockchain documentation into unified platforms. For the Marlowe project, he authored 78% of the repository (17,900+ lines across 124 files), designed the information architecture for 5 different user personas, and established the review workflows that kept it accurate.
 
 He also builds tools when documentation needs them. At IOHK, he created TWO documentation tools:
-• **Essential Cardano AI Assistant** — a production chatbot processing 2,500 documents with zero hallucination
+• **Essential Cardano AI Assistant** — a full-stack chatbot processing 2,500 documents with zero hallucination
 • **ChatDoc-InsightMiner-PromptLab** — a Python toolkit that analyzes Discord discussions to derive FAQ content from real user questions
 
 That pattern — building systematic solutions when documentation challenges require it — sets him apart. With 20+ years of technical writing experience, his differentiator is strategic ownership combined with technical depth.
@@ -229,7 +260,7 @@ This demonstrates he can build software when documentation needs require it. But
 
   technicalDepth: `Yes, Joseph is technical enough to work directly with engineers — and that's a key differentiator.
 
-He reads codebases to understand how systems actually work, not just what engineers tell him. He writes Python and JavaScript for documentation tooling. He built a production AI chatbot from scratch.
+He reads codebases to understand how systems actually work, not just what engineers tell him. He writes Python and JavaScript for documentation tooling. He built a full-stack AI chatbot from scratch.
 
 For Marlowe, he documented a 7-service microservices architecture, 91-schema OpenAPI specification, and 8 typed protocols. That required understanding blockchain concepts, cryptographic operations, and financial smart contracts at a technical level.
 
@@ -293,7 +324,7 @@ export const fitAssessments = {
       { requirement: "Information architecture", evidence: "Designed persona-based architecture for 5 user types, dual-track system separating reference from tutorials, user journey framework with visual pathway diagrams." },
       { requirement: "API & developer documentation", evidence: "Documented 91-schema OpenAPI specification, 7-service microservices architecture, REST API tutorials. Created first comprehensive API docs at AJA Video Systems." },
       { requirement: "Docs-as-code workflows", evidence: "Implemented Docusaurus with TypeScript, merged 59 PRs via GitHub workflows, built reusable MDX components. Led migrations from Read the Docs to Docusaurus." },
-      { requirement: "Technical depth", evidence: "Built production AI chatbot solo. Documented blockchain smart contracts, cryptographic operations, typed protocols. Read codebases, write Python/JavaScript." }
+      { requirement: "Technical depth", evidence: "Built full-stack AI chatbot solo. Documented blockchain smart contracts, cryptographic operations, typed protocols. Read codebases, write Python/JavaScript." }
     ],
     gaps: [
       { area: "People management", note: "I've owned documentation strategy and led projects, but haven't managed a team of writers directly. I'm a senior IC or documentation lead, not a people manager." }
@@ -305,8 +336,8 @@ export const fitAssessments = {
     title: "Honest Assessment — Probably Not Your Person",
     summary: "I want to be direct with you. Here's why this might not be the right fit:",
     mismatches: [
-      { requirement: "Software engineering role", reality: "I'm a technical writer who builds, not a software engineer. I shipped an AI chatbot and documentation tooling, but I'm not going to architect your distributed systems." },
-      { requirement: "Deep ML/AI expertise", reality: "I built one production AI chatbot and learned a lot, but it's one project — not years of ML/AI engineering." },
+      { requirement: "Software engineering role", reality: "I'm a technical writer who builds, not a software engineer. I built an AI chatbot and documentation tooling, but I'm not going to architect your distributed systems." },
+      { requirement: "Deep ML/AI expertise", reality: "I built one full-stack AI chatbot and learned a lot, but it's one project — not years of ML/AI engineering." },
       { requirement: "People management", reality: "I've owned documentation strategy and led projects, but I haven't managed a team of writers. If you need a people manager, that's not me yet." },
       { requirement: "Product management", reality: "I think strategically about documentation as a product, but I haven't owned product roadmaps or P&L." }
     ],
