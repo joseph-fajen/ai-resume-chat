@@ -14,7 +14,13 @@
       "Bash(npm run dev:*)",
       "Bash(curl:*)",
       "Bash(uvicorn app.main:app:*)",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(docker-compose:*)",
+      "Bash(pgrep:*)",
+      "Bash(ls:*)",
+      "Bash(docker compose:*)",
+      "Bash(kill:*)",
+      "Bash(xargs:*)"
     ]
   }
 }
