@@ -6,12 +6,12 @@ import { fitAssessments } from "@/data/joseph-fajen";
 type FitType = "strong" | "weak";
 
 const jobDescriptions = {
-  strong: `Senior Platform Engineer — Series B Fintech
+  strong: `Senior Documentation Engineer — Series B API Platform
 
-We're looking for someone with deep API design experience, comfort with ambiguity, and the ability to lead cross-functional initiatives. You'll own our integration platform serving hundreds of partners...`,
-  weak: `Head of Product, Consumer — Series C Mobile App
+We're looking for someone who can own our developer documentation end-to-end: information architecture, docs-as-code infrastructure, API references, and tutorials. You'll work directly with engineering to build a world-class developer experience...`,
+  weak: `Senior ML Engineer — AI Research Lab
 
-We need a consumer product leader with mobile-first experience and deep growth/experimentation background. You'll own our core mobile experience and drive user acquisition...`,
+We need a machine learning engineer with deep experience in model training, distributed systems, and production ML pipelines. You'll design and implement novel architectures for large-scale inference...`,
 };
 
 const FitAssessment = () => {

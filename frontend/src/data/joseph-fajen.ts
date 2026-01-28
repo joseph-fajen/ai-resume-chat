@@ -142,22 +142,19 @@ I also build: built and deployed a full-stack AI chatbot solo, mass-processing 2
     ]
   },
 
-  // DRAFT: These failure stories need careful review and iteration
-  // Placeholder content based on Marlowe experience - to be refined
-  failures: [
+  challengesAndFailures: [
     {
       year: 2023,
-      title: "Building for Users Who Weren't There Yet",
-      summary: "Created comprehensive documentation without meaningful user feedback to guide priorities.",
-      details: "The Marlowe project had a clear technical vision but minimal community adoption — only a handful of developers actually using it. I had to anticipate user needs through product understanding rather than feedback loops. While the documentation was well-structured, I sometimes invested heavily in content that may not have matched actual user priorities.",
+      title: "Documenting for a Pre-Adoption Product",
+      summary: "Built comprehensive documentation for a product with minimal community adoption, requiring creative approaches to validate priorities.",
+      details: "The Marlowe project had a clear technical vision but minimal community adoption — only a handful of developers actually using it. I had to anticipate user needs through product understanding rather than feedback loops. Without traditional usage data or user feedback, I risked investing heavily in content that may not have matched actual user priorities.",
       lessons: "When feedback loops don't exist, seek engagement proactively. I started joining weekly drop-in calls to interact with the few active developers directly. Proactive engagement beats waiting for feedback that may never come."
     },
     {
-      year: 2019,
-      title: "The Over-Detailed API Reference",
-      summary: "Created comprehensive API documentation that overwhelmed users.",
-      details: "I documented every edge case and parameter variation so thoroughly that developers couldn't find the basic getting-started information they needed.",
-      lessons: "Good documentation has layers. Lead with the common cases, put edge cases in expandable sections or appendices."
+      title: "Misreading the Stakeholder Map After Team Management Changes",
+      summary: "Returned to a team after a year-long reassignment and misjudged who the key decision-maker was. Do NOT attribute this to a specific company.",
+      details: "After about 8 months on a team, I was reassigned to a different project for roughly a year. When I returned, management had changed significantly — new Product Manager, new Team Lead. I assumed the Product Manager was my primary stakeholder and aligned my documentation approach accordingly. But the PM and Team Lead had different philosophies about the documentation direction. I invested significant time on work that aligned with the PM's vision but not the Team Lead's. That created friction that could have been avoided.",
+      lessons: "After major team leadership changes, it's easy to make assumptions about who the primary stakeholder is. I learned to deliberately make no assumptions and comprehensively map out the stakeholder terrain — understand who has decision authority over what, and surface any disagreements early before investing weeks going in the wrong direction."
     }
   ],
 
@@ -179,7 +176,8 @@ I also build: built and deployed a full-stack AI chatbot solo, mass-processing 2
       "Essential Cardano AI Assistant was deployed to a test environment for testing and evaluation — never publicly released. Say 'built and deployed' or 'test deployment', NOT 'shipped production' or 'production deployment'.",
       "Marlowe tutorials and Starter Kit: COLLABORATED with Knowledge Engineer and Software Developer to integrate 41 tutorial pages. Do NOT say 'Built' or 'Created' the tutorials (implies sole authorship).",
       "OpenAPI specification: Worked closely with software developer to integrate the 91-schema spec. Do NOT say 'Created' or 'Authored' the spec.",
-      "Identity: 'Technical Writer Who Builds Tools' — not 'Who Ships Code'. 'Technical writer who develops' — not 'developer who writes'."
+      "Identity: 'Technical Writer Who Builds Tools' — not 'Who Ships Code'. 'Technical writer who develops' — not 'developer who writes'.",
+      "The 'Misreading the Stakeholder Map' failure story is deliberately not attributed to a specific company. Do NOT name or guess which company it occurred at."
     ]
   },
 
@@ -282,15 +280,15 @@ The team's response captures it: "Joseph owns the documentation and we're glad a
 
   failure: `Joseph documented two experiences he's willing to discuss openly:
 
-**Building for Users Who Weren't There Yet (2023)**
-The Marlowe project had minimal community adoption — only a handful of developers actually using it. He had to anticipate user needs through product understanding rather than feedback loops.
+**Documenting for a Pre-Adoption Product (2023)**
+The Marlowe project had minimal community adoption — only a handful of developers actually using it. He had to build comprehensive documentation without traditional feedback loops to validate priorities.
 
 Lesson: When feedback loops don't exist, seek engagement proactively. He started joining weekly drop-in calls to interact directly with active developers. Proactive engagement beats waiting for feedback that may never come.
 
-**The Over-Detailed API Reference (2019)**
-He documented every edge case and parameter variation so thoroughly that developers couldn't find the basic getting-started information they needed. Comprehensive became overwhelming.
+**Misreading the Stakeholder Map After Team Management Changes**
+After a year-long reassignment, he returned to a team where management had changed significantly. He assumed the new Product Manager was his primary stakeholder, but the PM and new Team Lead had different documentation philosophies. He invested time aligned with the PM's vision that didn't match the Team Lead's direction, creating avoidable friction.
 
-Lesson: Good documentation has layers. Lead with common cases, put edge cases in expandable sections or appendices.
+Lesson: After major leadership changes, make no assumptions about stakeholder dynamics. Deliberately map out who has decision authority and surface disagreements early — before investing weeks in the wrong direction.
 
 He shares these because honesty about challenges is more useful than a polished highlight reel.`,
 

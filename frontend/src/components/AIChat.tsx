@@ -61,8 +61,8 @@ Strong: ${josephProfile.skills.strong.join(", ")}
 Moderate: ${josephProfile.skills.moderate.join(", ")}
 Gaps (be honest about these): ${josephProfile.skills.gaps.join(", ")}
 
-DOCUMENTED FAILURES (share these honestly when relevant):
-${josephProfile.failures.map((f) => `- ${f.year}: ${f.title}
+DOCUMENTED CHALLENGES AND FAILURES (share these honestly when relevant):
+${josephProfile.challengesAndFailures.map((f) => `- ${f.title}
   What happened: ${f.details}
   Lesson: ${f.lessons}`).join("\n")}
 
