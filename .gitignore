@@ -38,3 +38,4 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 frontend/.env
+frontend/src/data/resume/
