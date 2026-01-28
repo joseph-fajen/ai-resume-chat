@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a monorepo with separate frontend and backend directories:
 
 ```
-sample-ai-resume/
+ai-resume-chat/
 ├── frontend/          # Vite + React + TypeScript
 ├── backend/           # FastAPI + Python
 ├── docker-compose.yml # Local development

@@ -499,7 +499,7 @@ The MVP is successful when:
 
 ### Related Resources
 
-- **Demo codebase:** `/Users/josephfajen/git/sample-ai-resume`
+- **Demo codebase:** `/Users/josephfajen/git/ai-resume-chat`
 - **Pattern reference:** `/Users/josephfajen/git/obsidian-ai-agent`
 - **Anthropic Claude docs:** https://docs.anthropic.com
 - **Railway docs:** https://docs.railway.app

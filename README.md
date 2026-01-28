@@ -17,7 +17,7 @@ An interactive resume website with a real AI chat interface powered by Anthropic
 ```bash
 # Clone and enter the project
 git clone <repo-url>
-cd sample-ai-resume
+cd ai-resume-chat
 
 # Configure your API key
 cp backend/.env.example backend/.env
@@ -125,7 +125,7 @@ Visit http://localhost:8080. The frontend proxies `/api/*` requests to the backe
 ## Project Structure
 
 ```
-sample-ai-resume/
+ai-resume-chat/
 ├── frontend/                    # React + Vite + TypeScript
 │   └── src/
 │       ├── components/          # UI components
