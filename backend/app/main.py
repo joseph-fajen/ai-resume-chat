@@ -12,7 +12,8 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api import chat, contact
@@ -65,20 +66,29 @@ app.include_router(chat.router, prefix="/api", tags=["chat"])
 app.include_router(contact.router, prefix="/api", tags=["contact"])
 
 
-@app.get("/")
-def read_root() -> dict[str, str]:
-    """Root endpoint providing API information."""
-    return {
-        "message": settings.app_name,
-        "version": settings.version,
-        "docs": "/docs",
-    }
-
-
 # Mount static files in production (when built frontend exists)
 static_dir = Path(__file__).parent.parent / "static"
 if static_dir.exists():
-    app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
+    # Serve static assets (JS, CSS, images)
+    app.mount("/assets", StaticFiles(directory=str(static_dir / "assets")), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(request: Request, full_path: str) -> FileResponse:
+        """Serve the SPA frontend, falling back to index.html for client-side routing."""
+        file_path = static_dir / full_path
+        if full_path and file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(static_dir / "index.html")
+else:
+
+    @app.get("/")
+    def read_root() -> dict[str, str]:
+        """Root endpoint providing API information (dev mode only)."""
+        return {
+            "message": settings.app_name,
+            "version": settings.version,
+            "docs": "/docs",
+        }
 
 
 if __name__ == "__main__":
