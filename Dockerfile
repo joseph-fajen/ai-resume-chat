@@ -14,7 +14,14 @@ WORKDIR /app
 
 # Install Python dependencies
 COPY backend/pyproject.toml ./
-RUN pip install --no-cache-dir .
+RUN pip install --no-cache-dir \
+    "fastapi>=0.115.0" \
+    "uvicorn[standard]>=0.32.0" \
+    "anthropic>=0.40.0" \
+    "pydantic-settings>=2.6.0" \
+    "structlog>=25.1.0" \
+    "python-multipart>=0.0.12" \
+    "pydantic[email]>=2.0.0"
 
 # Copy backend application
 COPY backend/app ./app
